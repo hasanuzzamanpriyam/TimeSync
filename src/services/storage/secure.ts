@@ -13,7 +13,22 @@ async function getStore(): Promise<Store> {
   return store;
 }
 
+const SETTINGS_KEY = "app_settings";
+
 export const secureStorage = {
+  get: async (key: string): Promise<unknown> => {
+    const s = await getStore();
+    const all = await s.get<Record<string, unknown>>(SETTINGS_KEY);
+    return all?.[key] ?? null;
+  },
+
+  set: async (key: string, value: unknown): Promise<void> => {
+    const s = await getStore();
+    const all = (await s.get<Record<string, unknown>>(SETTINGS_KEY)) ?? {};
+    all[key] = value;
+    await s.set(SETTINGS_KEY, all);
+    await s.save();
+  },
   setTokens: async (accessToken: string, refreshToken: string) => {
     const s = await getStore();
     await s.set(ACCESS_TOKEN_KEY, accessToken);
