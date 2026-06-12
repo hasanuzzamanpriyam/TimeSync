@@ -3,15 +3,8 @@ import { AppLayout } from "@/components/app-layout";
 import { LoginPage } from "@/features/auth/components/LoginPage";
 import { ProtectedRoute, AdminRoute } from "@/features/auth/components/ProtectedRoute";
 import { TaskList } from "@/features/tasks/components/TaskList";
-
-function DashboardPage() {
-  return (
-    <div className="space-y-4">
-      <h1 className="text-3xl font-bold">Dashboard</h1>
-      <p className="text-muted-foreground">Dashboard will be built in Sub-project 3.</p>
-    </div>
-  );
-}
+import { DashboardPage } from "@/features/dashboard/components/DashboardPage";
+import { ReportsPage } from "@/features/reports/components/ReportsPage";
 
 function TasksPage() {
   return (
@@ -26,15 +19,6 @@ function TimerPage() {
     <div className="space-y-4">
       <h1 className="text-3xl font-bold">Timer</h1>
       <p className="text-muted-foreground">Time tracking UI coming soon.</p>
-    </div>
-  );
-}
-
-function ReportsPage() {
-  return (
-    <div className="space-y-4">
-      <h1 className="text-3xl font-bold">Reports</h1>
-      <p className="text-muted-foreground">Reports will be built in Sub-project 3.</p>
     </div>
   );
 }
