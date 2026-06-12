@@ -52,10 +52,22 @@ jobs:
             libjavascriptcoregtk-4.1-dev
 
       - name: Install npm dependencies
-        run: npm ci
+        run: npm ci --verbose
 
       - name: Generate app icons
         run: node scripts/generate-icons.mjs
+
+      - name: Debug dependency resolution
+        shell: ${{ runner.os == 'Windows' && 'pwsh' || 'bash' }}
+        run: |
+          echo "=== Working directory ==="
+          pwd
+          echo "=== @radix-ui/react-tabs ==="
+          ls node_modules/@radix-ui/react-tabs/dist/ 2>/dev/null || echo "NOT FOUND"
+          echo "=== npm ls ==="
+          npm ls @radix-ui/react-tabs 2>&1 || true
+          echo "=== tsc check ==="
+          npx tsc --noEmit 2>&1 || true
 
       - name: Build Tauri app
         run: npx tauri build
