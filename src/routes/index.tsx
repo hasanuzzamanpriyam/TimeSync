@@ -5,6 +5,7 @@ import { ProtectedRoute, AdminRoute } from "@/features/auth/components/Protected
 import { TaskList } from "@/features/tasks/components/TaskList";
 import { DashboardPage } from "@/features/dashboard/components/DashboardPage";
 import { ReportsPage } from "@/features/reports/components/ReportsPage";
+import { AdminPage } from "@/features/admin/components/AdminPage";
 
 function TasksPage() {
   return (
@@ -19,15 +20,6 @@ function TimerPage() {
     <div className="space-y-4">
       <h1 className="text-3xl font-bold">Timer</h1>
       <p className="text-muted-foreground">Time tracking UI coming soon.</p>
-    </div>
-  );
-}
-
-function SettingsPage() {
-  return (
-    <div className="space-y-4">
-      <h1 className="text-3xl font-bold">Settings</h1>
-      <p className="text-muted-foreground">Settings will be built in Sub-project 4.</p>
     </div>
   );
 }
@@ -77,7 +69,7 @@ export const router = createBrowserRouter([
         children: [
           {
             path: "settings",
-            element: <SettingsPage />,
+            element: <AdminPage />,
           },
         ],
       },

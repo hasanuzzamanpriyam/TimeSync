@@ -7,6 +7,7 @@ import { useTimerStore } from "@/features/timer/store";
 import { TimerBar } from "@/features/timer/components/TimerBar";
 import { IdlePopup } from "@/features/timer/components/IdlePopup";
 import { Toaster } from "@/components/ui/sonner";
+import { syncManager } from "@/services/sync";
 
 function AppContent() {
   const checkSession = useAuthStore((state) => state.checkSession);
@@ -21,6 +22,16 @@ function AppContent() {
     initTimer();
     return () => destroyTimer();
   }, [initTimer, destroyTimer]);
+
+  useEffect(() => {
+    const initSync = async () => {
+      const stored = await (await import("@/services/storage/secure")).secureStorage.get("erp_sync_interval");
+      const interval = (stored as number) ?? 5;
+      syncManager.start(interval * 60 * 1000);
+    };
+    initSync();
+    return () => syncManager.stop();
+  }, []);
 
   return (
     <>
