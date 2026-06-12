@@ -18,8 +18,7 @@
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
-      "@radix-ui/react-tabs": ["./node_modules/@radix-ui/react-tabs"]
+      "@/*": ["./src/*"]
     }
   },
   "include": ["src"],
