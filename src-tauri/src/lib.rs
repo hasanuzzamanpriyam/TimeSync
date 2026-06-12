@@ -15,6 +15,12 @@ pub fn run() {
             sql: include_str!("../db/migrations/002_tasks_timer.sql"),
             kind: MigrationKind::Up,
         },
+        Migration {
+            version: 3,
+            description: "create sync_queue table",
+            sql: include_str!("../db/migrations/003_sync.sql"),
+            kind: MigrationKind::Up,
+        },
     ];
 
     tauri::Builder::default()
