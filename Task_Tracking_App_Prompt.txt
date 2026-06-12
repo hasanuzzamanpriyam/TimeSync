@@ -1,0 +1,223 @@
+
+Create a production-ready desktop Task Tracking Application inspired by Trackabi with modern UI/UX and enterprise-level architecture.
+
+PROJECT GOAL
+Build a cross-platform desktop application that runs on:
+- Windows
+- Linux
+- macOS
+
+The application will be integrated with an ERP system through REST APIs.
+
+The system should allow employees to track tasks, time, productivity, attendance, and work logs while synchronizing data with the ERP backend.
+
+TECHNOLOGY STACK
+
+Desktop Application:
+- Tauri + React + TypeScript (preferred)
+- Alternative: Electron + React + TypeScript
+
+Frontend:
+- React
+- TypeScript
+- Vite
+- React Router
+- Axios
+- Zustand or Redux Toolkit
+- Tailwind CSS
+- ShadCN UI
+
+Local Database:
+- SQLite
+
+Backend Communication:
+- REST API
+- JWT Authentication
+- Refresh Token Support
+
+Build Targets:
+- Windows (.exe)
+- Linux (.AppImage/.deb)
+- macOS (.dmg)
+
+USER ROLES
+
+Employee:
+- Login
+- Start task
+- Pause task
+- Resume task
+- Stop task
+- View assigned tasks
+- Create work logs
+- Submit timesheets
+- View attendance
+- View reports
+
+Manager:
+- View all employees
+- Assign tasks
+- Monitor progress
+- Approve timesheets
+- View productivity reports
+
+Admin:
+- Manage users
+- Manage teams
+- Configure ERP API settings
+- Manage permissions
+- View system reports
+
+CORE FEATURES
+
+Authentication:
+- Login
+- Logout
+- Refresh Token
+- Remember Me
+- Multi-role authentication
+
+Dashboard:
+- Today's worked hours
+- Weekly hours
+- Active task
+- Completed tasks
+- Productivity percentage
+- Attendance status
+
+Task Management:
+- Create/Edit/Delete task
+- Assign task
+- Task priorities: Low, Medium, High, Critical
+- Status: Pending, In Progress, On Hold, Completed, Cancelled
+
+Time Tracking:
+- Start timer
+- Pause timer
+- Resume timer
+- Stop timer
+- Track working hours, break time, idle time
+- Offline support
+- Automatic sync
+
+Activity Tracking:
+- Active application tracking
+- Keyboard activity count
+- Mouse activity count
+- Idle detection
+- Idle popup after 5 minutes
+
+Attendance:
+- Check In
+- Check Out
+- Break Start
+- Break End
+
+ERP API INTEGRATION
+
+Create API service layer with:
+POST /api/auth/login
+GET /api/tasks
+GET /api/projects
+POST /api/time-entries
+POST /api/attendance
+GET /api/users
+GET /api/reports
+
+Requirements:
+- Token-based authentication
+- Retry failed requests
+- Offline queue
+- Sync manager
+
+OFFLINE MODE
+
+SQLite storage for:
+- Tasks
+- Time entries
+- Attendance logs
+- Pending API requests
+
+Synchronization:
+Online → Send Pending Queue → Update Local Database → Mark Synced
+
+NOTIFICATIONS
+- Task reminders
+- Break reminders
+- Attendance reminders
+- ERP sync status
+
+REPORTING
+- Employee reports
+- Project reports
+- Export PDF, Excel, CSV
+
+SECURITY
+- JWT Authentication
+- Refresh Tokens
+- Encrypted local storage
+- Secure API communication
+- Role-based permissions
+- Audit logs
+
+ARCHITECTURE
+
+Use Clean Architecture.
+
+Folder Structure:
+
+src/
+├── app/
+├── components/
+├── pages/
+├── features/
+│   ├── auth/
+│   ├── tasks/
+│   ├── timer/
+│   ├── attendance/
+│   ├── reports/
+│   └── settings/
+├── services/
+│   ├── api/
+│   ├── sync/
+│   └── storage/
+├── hooks/
+├── store/
+├── routes/
+├── utils/
+└── types/
+
+UI REQUIREMENTS
+- Professional ERP-style interface
+- Responsive desktop layout
+- Light/Dark themes
+- Sidebar navigation
+- Dashboard widgets
+- Modern charts
+
+PERFORMANCE
+- Startup under 3 seconds
+- Memory usage under 300MB
+- Offline-first architecture
+- Background synchronization
+
+DELIVERABLES
+1. Full project architecture
+2. Database schema
+3. API service layer
+4. React frontend
+5. Tauri desktop layer
+6. SQLite integration
+7. Authentication module
+8. Task tracking module
+9. Time tracking module
+10. Attendance module
+11. Reporting module
+12. ERP API integration
+13. Offline sync engine
+14. Installer configuration
+15. Docker development environment
+16. Unit and integration tests
+17. Production deployment documentation
+
+Follow enterprise-grade coding standards, TypeScript best practices, SOLID principles, reusable components, and clean architecture throughout the project.

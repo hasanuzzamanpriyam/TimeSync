@@ -1,0 +1,14 @@
+{
+  "$schema": "https://raw.githubusercontent.com/nicedarg/tauri/main/crates/tauri-utils/schema.json",
+  "identifier": "default",
+  "description": "Default capability for the main window",
+  "windows": ["main"],
+  "permissions": [
+    "core:default",
+    "sql:default",
+    "sql:allow-load",
+    "sql:allow-execute",
+    "sql:allow-select",
+    "store:default"
+  ]
+}
