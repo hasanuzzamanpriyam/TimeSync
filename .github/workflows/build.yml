@@ -58,7 +58,7 @@ jobs:
         run: node scripts/generate-icons.mjs
 
       - name: Debug dependency resolution
-        shell: ${{ runner.os == 'Windows' && 'pwsh' || 'bash' }}
+        shell: bash
         run: |
           echo "=== Working directory ==="
           pwd
