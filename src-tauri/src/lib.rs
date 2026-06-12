@@ -9,6 +9,12 @@ pub fn run() {
             sql: include_str!("../db/migrations/001_initial.sql"),
             kind: MigrationKind::Up,
         },
+        Migration {
+            version: 2,
+            description: "create tasks, time_entries, activity_logs tables",
+            sql: include_str!("../db/migrations/002_tasks_timer.sql"),
+            kind: MigrationKind::Up,
+        },
     ];
 
     tauri::Builder::default()

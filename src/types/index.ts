@@ -35,3 +35,57 @@ export interface ApiError {
   status: number;
   code?: string;
 }
+
+export type TaskPriority = "low" | "medium" | "high" | "critical";
+export type TaskStatus = "pending" | "in_progress" | "on_hold" | "completed" | "cancelled";
+export type TimeEntryType = "work" | "break";
+export type TimerStatus = "running" | "paused" | "stopped";
+
+export interface Project {
+  id: number;
+  name: string;
+  description?: string;
+  erp_id?: number;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Task {
+  id: number;
+  title: string;
+  description?: string;
+  project_id?: number;
+  assigned_to?: number;
+  priority: TaskPriority;
+  status: TaskStatus;
+  estimated_minutes?: number;
+  erp_id?: number;
+  created_by?: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface TimeEntry {
+  id: number;
+  task_id: number;
+  user_id: number;
+  type: TimeEntryType;
+  started_at: string;
+  paused_at?: string;
+  resumed_at?: string;
+  stopped_at?: string;
+  total_seconds: number;
+  is_running: boolean;
+  erp_synced: boolean;
+  created_at: string;
+}
+
+export interface ActivityLog {
+  id: number;
+  user_id: number;
+  keyboard_count: number;
+  mouse_count: number;
+  idle_seconds: number;
+  recorded_at: string;
+}

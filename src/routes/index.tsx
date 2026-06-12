@@ -2,6 +2,7 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 import { AppLayout } from "@/components/app-layout";
 import { LoginPage } from "@/features/auth/components/LoginPage";
 import { ProtectedRoute, AdminRoute } from "@/features/auth/components/ProtectedRoute";
+import { TaskList } from "@/features/tasks/components/TaskList";
 
 function DashboardPage() {
   return (
@@ -15,8 +16,7 @@ function DashboardPage() {
 function TasksPage() {
   return (
     <div className="space-y-4">
-      <h1 className="text-3xl font-bold">Tasks</h1>
-      <p className="text-muted-foreground">Task management will be built in Sub-project 2.</p>
+      <TaskList />
     </div>
   );
 }
@@ -25,7 +25,7 @@ function TimerPage() {
   return (
     <div className="space-y-4">
       <h1 className="text-3xl font-bold">Timer</h1>
-      <p className="text-muted-foreground">Time tracking will be built in Sub-project 2.</p>
+      <p className="text-muted-foreground">Time tracking UI coming soon.</p>
     </div>
   );
 }
