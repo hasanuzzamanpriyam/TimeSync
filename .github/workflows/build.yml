@@ -53,8 +53,22 @@ jobs:
       - name: Install npm dependencies
         run: npm ci
 
-      - name: Build frontend + Tauri
-        run: npm run build && npm run tauri build
+      - name: Check installed packages
+        shell: bash
+        run: |
+          echo "=== node_modules/@radix-ui/react-tabs/ ==="
+          ls -la node_modules/@radix-ui/react-tabs/dist/ 2>&1 || echo "DIST DIR NOT FOUND"
+          echo "=== npm ls ==="
+          npm ls @radix-ui/react-tabs 2>&1
+
+      - name: Build frontend (TypeScript check)
+        run: npx tsc --noEmit 2>&1
+
+      - name: Build frontend (Vite bundle)
+        run: npx vite build 2>&1
+
+      - name: Build Tauri native app
+        run: npm run tauri build 2>&1
         env:
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
