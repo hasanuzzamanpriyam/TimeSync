@@ -55,6 +55,7 @@ jobs:
 
       - name: Install WiX (Windows)
         if: runner.os == 'Windows'
+        shell: bash
         run: |
           dotnet tool install --global wix-cli --version 5.2.1 2>&1 || echo "WiX install skipped/not needed"
 
@@ -75,11 +76,10 @@ jobs:
       - name: Build frontend (Vite bundle)
         run: npx vite build 2>&1
 
-      - name: Build Rust binary
+      - name: Build Rust binary (with Tauri CLI env)
         shell: bash
         run: |
-          cd src-tauri
-          cargo build --release 2>&1
+          npx tauri build --no-bundle 2>&1
 
       - name: Bundle Tauri app
         shell: bash
