@@ -76,10 +76,27 @@ jobs:
       - name: Build frontend (Vite bundle)
         run: npx vite build 2>&1
 
-      - name: Build Rust binary (with Tauri CLI env)
+      - name: Check dist directory
         shell: bash
         run: |
-          npx tauri build --no-bundle 2>&1
+          if [ -d "dist" ]; then
+            echo "::notice::dist directory exists"
+            ls -la dist/
+          else
+            echo "::error::dist directory NOT FOUND"
+          fi
+
+      - name: Build Rust binary (capture error)
+        shell: bash
+        run: |
+          npx tauri build --no-bundle > build-output.txt 2>&1; EXIT_CODE=$?
+          echo "=== TAURI BUILD EXIT CODE: $EXIT_CODE ==="
+          echo "=== FULL OUTPUT ==="
+          cat build-output.txt 2>/dev/null || echo "(no output file)"
+          if [ $EXIT_CODE -ne 0 ]; then
+            echo "::error title=Tauri build failed (exit $EXIT_CODE)::$(tail -5 build-output.txt 2>/dev/null | tr '\n' ';')"
+            exit $EXIT_CODE
+          fi
 
       - name: Bundle Tauri app
         shell: bash
