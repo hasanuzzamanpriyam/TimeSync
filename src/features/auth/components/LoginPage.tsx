@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuthStore } from "@/features/auth/store";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,7 +17,8 @@ export function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
-  const { login, isLoading, error, clearError } = useAuthStore();
+  const { login, isLoading, error, clearError, authMode, switchMode } =
+    useAuthStore();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -29,6 +30,18 @@ export function LoginPage() {
     } catch {
       // error is set in store
     }
+  };
+
+  const modeLabel: Record<string, string> = {
+    auto: "Auto (ERP → Demo)",
+    demo: "Demo",
+    erp: "ERP",
+  };
+
+  const nextMode: Record<string, "demo" | "erp" | "auto"> = {
+    auto: "demo",
+    demo: "erp",
+    erp: "auto",
   };
 
   return (
@@ -82,6 +95,18 @@ export function LoginPage() {
                 Remember me
               </Label>
             </div>
+            <div className="flex items-center justify-between">
+              <Button
+                type="button"
+                variant="ghost"
+                size="sm"
+                className="text-xs text-muted-foreground h-6 px-2"
+                onClick={() => switchMode(nextMode[authMode])}
+                disabled={isLoading}
+              >
+                Mode: {modeLabel[authMode]}
+              </Button>
+            </div>
             {error && (
               <p className="text-sm text-destructive">{error}</p>
             )}
@@ -96,6 +121,12 @@ export function LoginPage() {
               )}
             </Button>
           </form>
+          <div className="mt-4 text-center text-sm text-muted-foreground">
+            Don't have an account?{" "}
+            <Link to="/register" className="text-primary hover:underline">
+              Create one
+            </Link>
+          </div>
         </CardContent>
       </Card>
     </div>
