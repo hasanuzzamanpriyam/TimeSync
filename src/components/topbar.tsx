@@ -1,4 +1,5 @@
 import { useAuthStore } from "@/features/auth/store";
+import { Badge } from "@/components/ui/badge";
 import { useTheme } from "@/components/theme-provider";
 import { Button } from "@/components/ui/button";
 import {
@@ -20,7 +21,7 @@ import {
 import { useNavigate } from "react-router-dom";
 
 export function TopBar() {
-  const { user, logout } = useAuthStore();
+  const { user, logout, authMode } = useAuthStore();
   const { theme, setTheme } = useTheme();
   const navigate = useNavigate();
 
@@ -36,8 +37,14 @@ export function TopBar() {
   return (
     <header className="flex h-14 items-center justify-between border-b bg-background px-6">
       <div className="flex items-center gap-2">
-        <h2 className="text-sm text-muted-foreground">
-        </h2>
+        {authMode && (
+          <Badge
+            variant={authMode === "demo" ? "secondary" : authMode === "erp" ? "default" : "outline"}
+            className="text-[10px] px-1.5 py-0 h-5"
+          >
+            {authMode === "demo" ? "Demo" : authMode === "erp" ? "ERP" : "Auto"}
+          </Badge>
+        )}
       </div>
 
       <div className="flex items-center gap-2">
