@@ -74,27 +74,27 @@ jobs:
         shell: bash
         run: |
           mkdir -p build-logs
-          echo "PWD=$(pwd)" > build-logs/env.txt
-          echo "RUNNER_OS=$RUNNER_OS" >> build-logs/env.txt
-          echo "=== dist/ ===" >> build-logs/dist-check.txt
-          find dist/ -type f >> build-logs/dist-check.txt 2>&1 || echo "(find returned non-zero)"
-          echo "dist/ contents:"; cat build-logs/dist-check.txt
+          echo "PWD=$(pwd)" | tee build-logs/env.txt
+          echo "RUNNER_OS=$RUNNER_OS" | tee -a build-logs/env.txt
+          set +e
+          echo "=== dist/ contents ==="
+          find dist/ -type f 2>&1 || echo "(no files)"
           echo "=== CARGO BUILD ==="
           cd src-tauri
-          cargo build --release > ${{ github.workspace }}/build-logs/cargo-build.txt 2>&1
+          cargo build --release 2>&1 | tee ${{ github.workspace }}/build-logs/cargo-build.txt
           CARGO_EXIT=$?
           cd ${{ github.workspace }}
           echo "CARGO_EXIT=$CARGO_EXIT"
           echo "=== TAURI BUILD ==="
-          npx tauri build --verbose --bundles ${{ matrix.bundle }} > build-logs/tauri-build.txt 2>&1
+          npx tauri build --verbose --bundles ${{ matrix.bundle }} 2>&1 | tee build-logs/tauri-build.txt
           TAURI_EXIT=$?
           echo "TAURI_EXIT=$TAURI_EXIT"
-          # Print tail of both logs to annotations
-          echo "=== CARGO BUILD LOG (last 80 lines) ==="
-          tail -80 build-logs/cargo-build.txt
-          echo "=== TAURI BUILD LOG (last 80 lines) ==="
-          tail -80 build-logs/tauri-build.txt
-          if [ $CARGO_EXIT -ne 0 ] || [ $TAURI_EXIT -ne 0 ]; then exit 1; fi
+          set -e
+          echo "=== CARGO BUILD LOG (last 30 lines) ==="
+          tail -30 build-logs/cargo-build.txt
+          echo "=== TAURI BUILD LOG (last 30 lines) ==="
+          tail -30 build-logs/tauri-build.txt
+          exit $(( CARGO_EXIT + TAURI_EXIT ))
         env:
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
