@@ -52,19 +52,23 @@ fn register_local_user(
         bcrypt::hash(&password, bcrypt::DEFAULT_COST).map_err(|e| e.to_string())?;
     let session_token = uuid::Uuid::new_v4().to_string();
 
-    conn.execute(
+    let tx = conn.transaction().map_err(|e| format!("Tx error: {}", e))?;
+
+    tx.execute(
         "INSERT INTO users (username, email, role, full_name, is_active, password_hash) VALUES (?1, ?2, 'user', ?3, 1, ?4)",
         rusqlite::params![username, email, full_name, password_hash],
     )
     .map_err(|e| format!("Failed to create user: {}", e))?;
 
-    let user_id = conn.last_insert_rowid();
+    let user_id = tx.last_insert_rowid();
 
-    conn.execute(
+    tx.execute(
         "INSERT INTO sessions (user_id, access_token, refresh_token, expires_at, is_remember_me) VALUES (?1, ?2, ?2, '2099-12-31 23:59:59', 1)",
         rusqlite::params![user_id, session_token],
     )
     .map_err(|e| format!("Failed to create session: {}", e))?;
+
+    tx.commit().map_err(|e| format!("Commit error: {}", e))?;
 
     let user = UserJson {
         id: user_id,
@@ -122,11 +126,13 @@ fn login_local_user(
 
             let session_token = uuid::Uuid::new_v4().to_string();
 
-            conn.execute(
+            let tx = conn.transaction().map_err(|e| format!("Tx error: {}", e))?;
+            tx.execute(
                 "INSERT INTO sessions (user_id, access_token, refresh_token, expires_at, is_remember_me) VALUES (?1, ?2, ?2, '2099-12-31 23:59:59', 1)",
                 rusqlite::params![id, session_token],
             )
             .map_err(|e| format!("Failed to create session: {}", e))?;
+            tx.commit().map_err(|e| format!("Commit error: {}", e))?;
 
             Ok(Some(LoginResult {
                 user: UserJson {
@@ -149,6 +155,8 @@ fn login_local_user(
 fn seed_demo_users(app_handle: tauri::AppHandle) -> Result<(), String> {
     let db_path = get_db_path(&app_handle)?;
     let conn = Connection::open(&db_path).map_err(|e| format!("DB open error: {}", e))?;
+
+    let _ = conn.execute_batch("ALTER TABLE users ADD COLUMN password_hash TEXT;");
 
     let admin_hash =
         bcrypt::hash("admin", bcrypt::DEFAULT_COST).map_err(|e| e.to_string())?;
