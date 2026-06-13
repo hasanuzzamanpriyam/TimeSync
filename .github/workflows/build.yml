@@ -72,9 +72,14 @@ jobs:
 
       - name: Build Tauri native app
         shell: bash
+        working-directory: ./
         run: |
+          echo "=== CWD ==="
+          pwd
           echo "=== checking dist/ ==="
-          ls -la dist/ 2>&1
+          ls -la dist/ 2>&1 || echo "dist/ NOT FOUND"
+          echo "=== checking src-tauri/dist ==="
+          ls -la src-tauri/dist/ 2>&1 || echo "src-tauri/dist/ NOT FOUND"
           echo "=== running tauri build ==="
           npx tauri build --verbose --bundles ${{ matrix.bundle }} 2>&1
         env:
