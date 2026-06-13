@@ -1,6 +1,7 @@
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import { AppLayout } from "@/components/app-layout";
 import { LoginPage } from "@/features/auth/components/LoginPage";
+import { RegisterPage } from "@/features/auth/components/RegisterPage";
 import { ProtectedRoute, AdminRoute } from "@/features/auth/components/ProtectedRoute";
 import { TaskList } from "@/features/tasks/components/TaskList";
 import { DashboardPage } from "@/features/dashboard/components/DashboardPage";
@@ -28,6 +29,10 @@ export const router = createBrowserRouter([
   {
     path: "/login",
     element: <LoginPage />,
+  },
+  {
+    path: "/register",
+    element: <RegisterPage />,
   },
   {
     path: "/",
