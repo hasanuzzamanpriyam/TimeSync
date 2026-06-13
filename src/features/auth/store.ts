@@ -100,7 +100,6 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
       // Best-effort ERP registration
       try {
-        const { authApi } = await import("@/services/api/auth");
         await authApi.register(username, email, password, fullName);
       } catch {
         // Non-blocking
@@ -156,7 +155,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
       const db = await initDatabase();
       const result = await db.select<Record<string, any>[]>(
-        "SELECT u.* FROM users u INNER JOIN sessions s ON s.user_id = u.id ORDER BY s.created_at DESC LIMIT 1",
+        "SELECT u.* FROM users u INNER JOIN sessions s ON s.user_id = u.id WHERE s.expires_at > datetime('now') ORDER BY s.created_at DESC LIMIT 1",
       );
 
       if (result.length > 0) {

@@ -156,6 +156,10 @@ fn seed_demo_users(app_handle: tauri::AppHandle) -> Result<(), String> {
     let db_path = get_db_path(&app_handle)?;
     let conn = Connection::open(&db_path).map_err(|e| format!("DB open error: {}", e))?;
 
+    // Migration 4 (ALTER TABLE ADD COLUMN password_hash) may not have run yet when
+    // this setup hook fires, because tauri-plugin-sql runs migrations on first
+    // Database.load() call from the frontend. This ensures the column exists so
+    // the INSERT below doesn't fail with "no such column".
     let _ = conn.execute_batch("ALTER TABLE users ADD COLUMN password_hash TEXT;");
 
     let admin_hash =
