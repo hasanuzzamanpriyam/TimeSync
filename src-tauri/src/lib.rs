@@ -46,7 +46,7 @@ fn register_local_user(
     full_name: String,
 ) -> Result<LoginResult, String> {
     let db_path = get_db_path(&app_handle)?;
-    let conn = Connection::open(&db_path).map_err(|e| format!("DB open error: {}", e))?;
+    let mut conn = Connection::open(&db_path).map_err(|e| format!("DB open error: {}", e))?;
 
     let password_hash =
         bcrypt::hash(&password, bcrypt::DEFAULT_COST).map_err(|e| e.to_string())?;
@@ -92,7 +92,7 @@ fn login_local_user(
     password: String,
 ) -> Result<Option<LoginResult>, String> {
     let db_path = get_db_path(&app_handle)?;
-    let conn = Connection::open(&db_path).map_err(|e| format!("DB open error: {}", e))?;
+    let mut conn = Connection::open(&db_path).map_err(|e| format!("DB open error: {}", e))?;
 
     let result = conn
         .query_row(
@@ -154,7 +154,7 @@ fn login_local_user(
 #[tauri::command]
 fn seed_demo_users(app_handle: tauri::AppHandle) -> Result<(), String> {
     let db_path = get_db_path(&app_handle)?;
-    let conn = Connection::open(&db_path).map_err(|e| format!("DB open error: {}", e))?;
+    let mut conn = Connection::open(&db_path).map_err(|e| format!("DB open error: {}", e))?;
 
     // Migration 4 (ALTER TABLE ADD COLUMN password_hash) may not have run yet when
     // this setup hook fires, because tauri-plugin-sql runs migrations on first
