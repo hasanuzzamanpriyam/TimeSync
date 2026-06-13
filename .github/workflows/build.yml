@@ -76,25 +76,32 @@ jobs:
           mkdir -p build-logs
           echo "PWD=$(pwd)" | tee build-logs/env.txt
           echo "RUNNER_OS=$RUNNER_OS" | tee -a build-logs/env.txt
-          set +e
           echo "=== dist/ contents ==="
           find dist/ -type f 2>&1 || echo "(no files)"
-          echo "=== CARGO BUILD ==="
+          echo "=== CARGO BUILD (release) ==="
           cd src-tauri
-          cargo build --release 2>&1 | tee ${{ github.workspace }}/build-logs/cargo-build.txt
-          CARGO_EXIT=$?
+          cargo build --release 2>&1 | tee ${{ github.workspace }}/build-logs/cargo-build.txt || true
+          CARGO_EXIT=${PIPESTATUS[0]}
           cd ${{ github.workspace }}
           echo "CARGO_EXIT=$CARGO_EXIT"
-          echo "=== TAURI BUILD ==="
-          npx tauri build --verbose --bundles ${{ matrix.bundle }} 2>&1 | tee build-logs/tauri-build.txt
-          TAURI_EXIT=$?
+          if [ $CARGO_EXIT -ne 0 ]; then
+            echo "=== CARGO BUILD LOG (last 10 lines) ==="
+            tail -10 build-logs/cargo-build.txt
+            LAST_LINE=$(tail -1 build-logs/cargo-build.txt)
+            echo "::error title=Cargo build failed::$LAST_LINE"
+            exit $CARGO_EXIT
+          fi
+          echo "=== Cargo build OK, running Tauri bundler ==="
+          npx tauri build --verbose --bundles ${{ matrix.bundle }} 2>&1 | tee build-logs/tauri-build.txt || true
+          TAURI_EXIT=${PIPESTATUS[0]}
           echo "TAURI_EXIT=$TAURI_EXIT"
-          set -e
-          echo "=== CARGO BUILD LOG (last 30 lines) ==="
-          tail -30 build-logs/cargo-build.txt
-          echo "=== TAURI BUILD LOG (last 30 lines) ==="
-          tail -30 build-logs/tauri-build.txt
-          exit $(( CARGO_EXIT + TAURI_EXIT ))
+          if [ $TAURI_EXIT -ne 0 ]; then
+            echo "=== TAURI BUILD LOG (last 10 lines) ==="
+            tail -10 build-logs/tauri-build.txt
+            LAST_LINE=$(tail -1 build-logs/tauri-build.txt)
+            echo "::error title=Tauri bundler failed::$LAST_LINE"
+            exit $TAURI_EXIT
+          fi
         env:
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
