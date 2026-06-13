@@ -93,12 +93,9 @@ jobs:
           cargo build --release 2>&1 | tee ../cargo-output.txt; EXIT_CODE=$?
           cd ..
           echo "Cargo exit code: $EXIT_CODE"
-          echo "=== LAST 20 LINES OF CARGO OUTPUT ==="
-          tail -20 cargo-output.txt 2>/dev/null || echo "(no cargo output)"
-          LAST_LINE=$(tail -1 cargo-output.txt 2>/dev/null)
-          echo "Last line: $LAST_LINE"
+          echo "=== LAST 30 LINES OF CARGO OUTPUT ===" >> "$GITHUB_STEP_SUMMARY"
+          tail -30 cargo-output.txt 2>/dev/null >> "$GITHUB_STEP_SUMMARY" || echo "(no cargo output)" >> "$GITHUB_STEP_SUMMARY"
           if [ $EXIT_CODE -ne 0 ]; then
-            echo "::error title=build failed::$(tail -5 cargo-output.txt 2>/dev/null | tr -s '\n' ' ')"
             exit $EXIT_CODE
           fi
 
