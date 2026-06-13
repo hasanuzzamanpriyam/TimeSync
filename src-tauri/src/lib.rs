@@ -218,12 +218,6 @@ pub fn run() {
                 .build(),
         )
         .plugin(tauri_plugin_store::Builder::default().build())
-        .setup(|app| {
-            if let Err(e) = seed_demo_users(app.handle()) {
-                eprintln!("Failed to seed demo users: {}", e);
-            }
-            Ok(())
-        })
         .invoke_handler(tauri::generate_handler![
             hash_password,
             verify_password,

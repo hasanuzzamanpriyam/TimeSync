@@ -150,13 +150,15 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   checkSession: async () => {
     set({ isLoading: true });
     try {
+      const db = await initDatabase();
+      await invoke("seed_demo_users");
+
       const accessToken = await secureStorage.getAccessToken();
       if (!accessToken) {
         set({ isLoading: false, isAuthenticated: false, user: null });
         return;
       }
 
-      const db = await initDatabase();
       const result = await db.select<Record<string, any>[]>(
         "SELECT u.* FROM users u INNER JOIN sessions s ON s.user_id = u.id WHERE s.expires_at > datetime('now') ORDER BY s.created_at DESC LIMIT 1",
       );
