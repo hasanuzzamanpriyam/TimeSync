@@ -67,7 +67,7 @@ jobs:
           echo "=== node_modules/@radix-ui/react-tabs/ ==="
           ls -la node_modules/@radix-ui/react-tabs/dist/ 2>&1 || echo "DIST DIR NOT FOUND"
           echo "=== npm ls ==="
-          npm ls @radix-ui/react-tabs 2>&1
+          npm ls @radix-ui/react-tabs 2>&1 || true
 
       - name: Build frontend (TypeScript check)
         run: npx tsc --noEmit 2>&1
@@ -75,10 +75,16 @@ jobs:
       - name: Build frontend (Vite bundle)
         run: npx vite build 2>&1
 
-      - name: Build Tauri native app
+      - name: Build Rust binary
         shell: bash
         run: |
-          npx tauri build --verbose --bundles ${{ matrix.bundle }} 2>&1
+          cd src-tauri
+          cargo build --release 2>&1
+
+      - name: Bundle Tauri app
+        shell: bash
+        run: |
+          npx tauri build --bundles ${{ matrix.bundle }} 2>&1
         env:
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
