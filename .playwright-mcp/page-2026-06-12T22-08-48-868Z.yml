@@ -1,0 +1,508 @@
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - link "Skip to content" [ref=e4] [cursor=pointer]:
+      - /url: "#start-of-content"
+    - banner [ref=e6]:
+      - heading "Navigation Menu" [level=2] [ref=e7]
+      - generic [ref=e8]:
+        - link "Homepage" [ref=e10] [cursor=pointer]:
+          - /url: /
+          - img [ref=e11]
+        - generic [ref=e13]:
+          - navigation "Global" [ref=e16]:
+            - list [ref=e17]:
+              - listitem [ref=e18]:
+                - button "Platform" [ref=e20] [cursor=pointer]:
+                  - text: Platform
+                  - img [ref=e21]
+              - listitem [ref=e23]:
+                - button "Solutions" [ref=e25] [cursor=pointer]:
+                  - text: Solutions
+                  - img [ref=e26]
+              - listitem [ref=e28]:
+                - button "Resources" [ref=e30] [cursor=pointer]:
+                  - text: Resources
+                  - img [ref=e31]
+              - listitem [ref=e33]:
+                - button "Open Source" [ref=e35] [cursor=pointer]:
+                  - text: Open Source
+                  - img [ref=e36]
+              - listitem [ref=e38]:
+                - button "Enterprise" [ref=e40] [cursor=pointer]:
+                  - text: Enterprise
+                  - img [ref=e41]
+              - listitem [ref=e43]:
+                - link "Pricing" [ref=e44] [cursor=pointer]:
+                  - /url: https://github.com/pricing
+                  - generic [ref=e45]: Pricing
+          - generic [ref=e46]:
+            - button "Search or jump to…" [ref=e49] [cursor=pointer]:
+              - img [ref=e51]
+            - link "Sign in" [ref=e54] [cursor=pointer]:
+              - /url: /login?return_to=https%3A%2F%2Fgithub.com%2Fhasanuzzamanpriyam%2FTimeSync%2Factions%2Fruns%2F27445794420
+            - link "Sign up" [ref=e55] [cursor=pointer]:
+              - /url: /signup?ref_cta=Sign+up&ref_loc=header+logged+out&ref_page=%2F%3Cuser-name%3E%2F%3Crepo-name%3E%2Factions%2Fworkflow_runs%2Fshow&source=header-repo&source_repo=hasanuzzamanpriyam%2FTimeSync
+            - button "Appearance settings" [ref=e58] [cursor=pointer]:
+              - img
+  - main [ref=e62]:
+    - generic [ref=e63]:
+      - generic [ref=e64]:
+        - generic [ref=e65]:
+          - generic [ref=e67]:
+            - img [ref=e68]
+            - link "hasanuzzamanpriyam" [ref=e71] [cursor=pointer]:
+              - /url: /hasanuzzamanpriyam
+            - generic [ref=e72]: /
+            - strong [ref=e73]:
+              - link "TimeSync" [ref=e74] [cursor=pointer]:
+                - /url: /hasanuzzamanpriyam/TimeSync
+            - generic [ref=e75]: Public
+          - generic [ref=e76]:
+            - list:
+              - listitem [ref=e77]:
+                - link "You must be signed in to change notification settings" [ref=e78] [cursor=pointer]:
+                  - /url: /login?return_to=%2Fhasanuzzamanpriyam%2FTimeSync
+                  - img [ref=e79]
+                  - text: Notifications
+              - listitem [ref=e81]:
+                - link "Fork 0" [ref=e82] [cursor=pointer]:
+                  - /url: /login?return_to=%2Fhasanuzzamanpriyam%2FTimeSync
+                  - img [ref=e83]
+                  - text: Fork
+                  - generic "0" [ref=e85]
+              - listitem [ref=e86]:
+                - link "You must be signed in to star a repository" [ref=e88] [cursor=pointer]:
+                  - /url: /login?return_to=%2Fhasanuzzamanpriyam%2FTimeSync
+                  - img [ref=e89]
+                  - text: Star
+                  - generic "0 users starred this repository" [ref=e91]: "0"
+        - navigation "Repository" [ref=e92]:
+          - list [ref=e93]:
+            - listitem [ref=e94]:
+              - link "Code" [ref=e95] [cursor=pointer]:
+                - /url: /hasanuzzamanpriyam/TimeSync
+                - img [ref=e96]
+                - generic [ref=e98]: Code
+            - listitem [ref=e99]:
+              - link "Issues" [ref=e100] [cursor=pointer]:
+                - /url: /hasanuzzamanpriyam/TimeSync/issues
+                - img [ref=e101]
+                - generic [ref=e104]: Issues
+            - listitem [ref=e105]:
+              - link "Pull requests" [ref=e106] [cursor=pointer]:
+                - /url: /hasanuzzamanpriyam/TimeSync/pulls
+                - img [ref=e107]
+                - generic [ref=e109]: Pull requests
+            - listitem [ref=e110]:
+              - link "Actions" [ref=e111] [cursor=pointer]:
+                - /url: /hasanuzzamanpriyam/TimeSync/actions
+                - img [ref=e112]
+                - generic [ref=e114]: Actions
+            - listitem [ref=e115]:
+              - link "Projects" [ref=e116] [cursor=pointer]:
+                - /url: /hasanuzzamanpriyam/TimeSync/projects
+                - img [ref=e117]
+                - generic [ref=e119]: Projects
+            - listitem [ref=e120]:
+              - link "Security and quality" [ref=e121] [cursor=pointer]:
+                - /url: /hasanuzzamanpriyam/TimeSync/security
+                - img [ref=e122]
+                - generic [ref=e124]: Security and quality
+            - listitem [ref=e125]:
+              - link "Insights" [ref=e126] [cursor=pointer]:
+                - /url: /hasanuzzamanpriyam/TimeSync/pulse
+                - img [ref=e127]
+                - generic [ref=e129]: Insights
+      - generic [ref=e141]:
+        - heading "hasanuzzamanpriyam/TimeSync" [level=1] [ref=e143]
+        - generic [ref=e144]:
+          - generic [ref=e147]:
+            - generic [ref=e148]:
+              - generic [ref=e149]:
+                - button "main branch" [ref=e151] [cursor=pointer]:
+                  - generic [ref=e152]:
+                    - generic [ref=e154]:
+                      - img [ref=e156]
+                      - generic [ref=e159]: main
+                    - generic:
+                      - img
+                - generic [ref=e160]:
+                  - link "1 Branch" [ref=e161] [cursor=pointer]:
+                    - /url: /hasanuzzamanpriyam/TimeSync/branches
+                    - generic [ref=e162]:
+                      - generic:
+                        - img
+                      - generic [ref=e164]:
+                        - strong [ref=e165]: "1"
+                        - text: Branch
+                  - link "0 Tags" [ref=e166] [cursor=pointer]:
+                    - /url: /hasanuzzamanpriyam/TimeSync/tags
+                    - generic [ref=e167]:
+                      - generic:
+                        - img
+                      - generic [ref=e169]:
+                        - strong [ref=e170]: "0"
+                        - text: Tags
+              - generic [ref=e171]:
+                - generic [ref=e175]:
+                  - img [ref=e177]
+                  - combobox "Go to file" [ref=e179]
+                - button "Code" [ref=e180] [cursor=pointer]:
+                  - generic [ref=e181]:
+                    - generic:
+                      - img
+                    - generic [ref=e182]: Code
+                    - generic:
+                      - img
+            - generic [ref=e183]:
+              - generic [ref=e184]:
+                - heading "Folders and files" [level=2] [ref=e185]
+                - table "Folders and files" [ref=e186]:
+                  - rowgroup:
+                    - row "Name Last commit message Last commit date":
+                      - columnheader "Name"
+                      - columnheader "Last commit message":
+                        - generic "Last commit message"
+                      - columnheader "Last commit date":
+                        - generic "Last commit date"
+                  - rowgroup [ref=e187]:
+                    - 'row "Latest commit hasanuzzamanpriyam commits by hasanuzzamanpriyam debug: add dependency resolution debug step to CI workflow Commit 501697d · Jun 13, 20262 minutes ago History 21 Commits" [ref=e188]':
+                      - 'cell "Latest commit hasanuzzamanpriyam commits by hasanuzzamanpriyam debug: add dependency resolution debug step to CI workflow Commit 501697d · Jun 13, 20262 minutes ago History 21 Commits" [ref=e189]':
+                        - generic [ref=e190]:
+                          - heading "Latest commit" [level=2] [ref=e191]
+                          - generic [ref=e192]:
+                            - generic [ref=e194]:
+                              - link "hasanuzzamanpriyam" [ref=e195] [cursor=pointer]:
+                                - /url: /hasanuzzamanpriyam
+                                - img "hasanuzzamanpriyam" [ref=e196]
+                              - link "commits by hasanuzzamanpriyam" [ref=e197] [cursor=pointer]:
+                                - /url: /hasanuzzamanpriyam/TimeSync/commits?author=hasanuzzamanpriyam
+                                - text: hasanuzzamanpriyam
+                            - 'link "debug: add dependency resolution debug step to CI workflow" [ref=e201] [cursor=pointer]':
+                              - /url: /hasanuzzamanpriyam/TimeSync/commit/501697d239a3fb3db33be3fd942526512e8f5b39
+                          - generic [ref=e202]:
+                            - generic [ref=e204]:
+                              - link "Commit 501697d" [ref=e205] [cursor=pointer]:
+                                - /url: /hasanuzzamanpriyam/TimeSync/commit/501697d239a3fb3db33be3fd942526512e8f5b39
+                                - text: 501697d
+                              - text: ·
+                              - generic "Jun 13, 2026, 4:06 AM GMT+6" [ref=e206]: Jun 13, 20262 minutes ago
+                            - generic [ref=e207]:
+                              - heading "History" [level=2] [ref=e208]
+                              - link "21 Commits" [ref=e209] [cursor=pointer]:
+                                - /url: /hasanuzzamanpriyam/TimeSync/commits/main/
+                                - generic [ref=e210]:
+                                  - generic:
+                                    - img
+                                  - generic [ref=e211]: 21 Commits
+                    - 'row ".github/workflows, (Directory) debug: add dependency resolution debug step to CI workflow Jun 13, 20262 minutes ago" [ref=e212]':
+                      - cell ".github/workflows, (Directory)" [ref=e213]:
+                        - generic [ref=e214]:
+                          - img [ref=e215]
+                          - link ".github/workflows, (Directory)" [ref=e220] [cursor=pointer]:
+                            - /url: /hasanuzzamanpriyam/TimeSync/tree/main/.github/workflows
+                            - text: .github/workflows
+                      - 'cell "debug: add dependency resolution debug step to CI workflow" [ref=e221]':
+                        - 'link "debug: add dependency resolution debug step to CI workflow" [ref=e224] [cursor=pointer]':
+                          - /url: /hasanuzzamanpriyam/TimeSync/commit/501697d239a3fb3db33be3fd942526512e8f5b39
+                      - cell "Jun 13, 20262 minutes ago" [ref=e225]:
+                        - generic [ref=e226]: Jun 13, 20262 minutes ago
+                    - 'row "docs/superpowers, (Directory) docs: Sub-project 4 implementation plan Jun 13, 202636 minutes ago" [ref=e227]':
+                      - cell "docs/superpowers, (Directory)" [ref=e228]:
+                        - generic [ref=e229]:
+                          - img [ref=e230]
+                          - link "docs/superpowers, (Directory)" [ref=e235] [cursor=pointer]:
+                            - /url: /hasanuzzamanpriyam/TimeSync/tree/main/docs/superpowers
+                            - text: docs/superpowers
+                      - 'cell "docs: Sub-project 4 implementation plan" [ref=e236]':
+                        - 'link "docs: Sub-project 4 implementation plan" [ref=e239] [cursor=pointer]':
+                          - /url: /hasanuzzamanpriyam/TimeSync/commit/b8ba54f50ff54f92a9fb4306cbc13929d967ea21
+                      - cell "Jun 13, 202636 minutes ago" [ref=e240]:
+                        - generic [ref=e241]: Jun 13, 202636 minutes ago
+                    - 'row "icons, (Directory) ci: add GitHub Actions cross-platform builds + app icons Jun 13, 202615 minutes ago" [ref=e242]':
+                      - cell "icons, (Directory)" [ref=e243]:
+                        - generic [ref=e244]:
+                          - img [ref=e245]
+                          - link "icons, (Directory)" [ref=e250] [cursor=pointer]:
+                            - /url: /hasanuzzamanpriyam/TimeSync/tree/main/icons
+                            - text: icons
+                      - 'cell "ci: add GitHub Actions cross-platform builds + app icons" [ref=e251]':
+                        - 'link "ci: add GitHub Actions cross-platform builds + app icons" [ref=e254] [cursor=pointer]':
+                          - /url: /hasanuzzamanpriyam/TimeSync/commit/5f59953e0d6ef61550011d576943ab2de8f78ced
+                      - cell "Jun 13, 202615 minutes ago" [ref=e255]:
+                        - generic [ref=e256]: Jun 13, 202615 minutes ago
+                    - 'row "scripts, (Directory) ci: add GitHub Actions cross-platform builds + app icons Jun 13, 202615 minutes ago" [ref=e257]':
+                      - cell "scripts, (Directory)" [ref=e258]:
+                        - generic [ref=e259]:
+                          - img [ref=e260]
+                          - link "scripts, (Directory)" [ref=e265] [cursor=pointer]:
+                            - /url: /hasanuzzamanpriyam/TimeSync/tree/main/scripts
+                            - text: scripts
+                      - 'cell "ci: add GitHub Actions cross-platform builds + app icons" [ref=e266]':
+                        - 'link "ci: add GitHub Actions cross-platform builds + app icons" [ref=e269] [cursor=pointer]':
+                          - /url: /hasanuzzamanpriyam/TimeSync/commit/5f59953e0d6ef61550011d576943ab2de8f78ced
+                      - cell "Jun 13, 202615 minutes ago" [ref=e270]:
+                        - generic [ref=e271]: Jun 13, 202615 minutes ago
+                    - 'row "src-tauri, (Directory) ci: add GitHub Actions cross-platform builds + app icons Jun 13, 202615 minutes ago" [ref=e272]':
+                      - cell "src-tauri, (Directory)" [ref=e273]:
+                        - generic [ref=e274]:
+                          - img [ref=e275]
+                          - link "src-tauri, (Directory)" [ref=e280] [cursor=pointer]:
+                            - /url: /hasanuzzamanpriyam/TimeSync/tree/main/src-tauri
+                            - text: src-tauri
+                      - 'cell "ci: add GitHub Actions cross-platform builds + app icons" [ref=e281]':
+                        - 'link "ci: add GitHub Actions cross-platform builds + app icons" [ref=e284] [cursor=pointer]':
+                          - /url: /hasanuzzamanpriyam/TimeSync/commit/5f59953e0d6ef61550011d576943ab2de8f78ced
+                      - cell "Jun 13, 202615 minutes ago" [ref=e285]:
+                        - generic [ref=e286]: Jun 13, 202615 minutes ago
+                    - 'row "src, (Directory) feat: wire SyncManager and admin routes Jun 13, 202630 minutes ago" [ref=e287]':
+                      - cell "src, (Directory)" [ref=e288]:
+                        - generic [ref=e289]:
+                          - img [ref=e290]
+                          - link "src, (Directory)" [ref=e295] [cursor=pointer]:
+                            - /url: /hasanuzzamanpriyam/TimeSync/tree/main/src
+                            - text: src
+                      - 'cell "feat: wire SyncManager and admin routes" [ref=e296]':
+                        - 'link "feat: wire SyncManager and admin routes" [ref=e299] [cursor=pointer]':
+                          - /url: /hasanuzzamanpriyam/TimeSync/commit/00abd8a9da4e53787f7d7fb46fb0debdb422ceaa
+                      - cell "Jun 13, 202630 minutes ago" [ref=e300]:
+                        - generic [ref=e301]: Jun 13, 202630 minutes ago
+                    - 'row ".gitignore, (File) ci: add GitHub Actions cross-platform builds + app icons Jun 13, 202615 minutes ago" [ref=e302]':
+                      - cell ".gitignore, (File)" [ref=e303]:
+                        - generic [ref=e304]:
+                          - img [ref=e305]
+                          - link ".gitignore, (File)" [ref=e310] [cursor=pointer]:
+                            - /url: /hasanuzzamanpriyam/TimeSync/blob/main/.gitignore
+                            - text: .gitignore
+                      - 'cell "ci: add GitHub Actions cross-platform builds + app icons" [ref=e311]':
+                        - 'link "ci: add GitHub Actions cross-platform builds + app icons" [ref=e314] [cursor=pointer]':
+                          - /url: /hasanuzzamanpriyam/TimeSync/commit/5f59953e0d6ef61550011d576943ab2de8f78ced
+                      - cell "Jun 13, 202615 minutes ago" [ref=e315]:
+                        - generic [ref=e316]: Jun 13, 202615 minutes ago
+                    - row "README.md, (File) first commit Jun 13, 20261 hour ago" [ref=e317]:
+                      - cell "README.md, (File)" [ref=e318]:
+                        - generic [ref=e319]:
+                          - img [ref=e320]
+                          - link "README.md, (File)" [ref=e325] [cursor=pointer]:
+                            - /url: /hasanuzzamanpriyam/TimeSync/blob/main/README.md
+                            - text: README.md
+                      - cell "first commit" [ref=e326]:
+                        - link "first commit" [ref=e329] [cursor=pointer]:
+                          - /url: /hasanuzzamanpriyam/TimeSync/commit/9d6b78181b92ffd4b861e03febee3ed5633b5ac8
+                      - cell "Jun 13, 20261 hour ago" [ref=e330]:
+                        - generic [ref=e331]: Jun 13, 20261 hour ago
+                    - 'row "Task_Tracking_App_Prompt.txt, (File) feat: initial TimeSync Sub-project 1 - scaffold, auth, UI shell Jun 13, 20261 hour ago" [ref=e332]':
+                      - cell "Task_Tracking_App_Prompt.txt, (File)" [ref=e333]:
+                        - generic [ref=e334]:
+                          - img [ref=e335]
+                          - link "Task_Tracking_App_Prompt.txt, (File)" [ref=e340] [cursor=pointer]:
+                            - /url: /hasanuzzamanpriyam/TimeSync/blob/main/Task_Tracking_App_Prompt.txt
+                            - text: Task_Tracking_App_Prompt.txt
+                      - 'cell "feat: initial TimeSync Sub-project 1 - scaffold, auth, UI shell" [ref=e341]':
+                        - 'link "feat: initial TimeSync Sub-project 1 - scaffold, auth, UI shell" [ref=e344] [cursor=pointer]':
+                          - /url: /hasanuzzamanpriyam/TimeSync/commit/d17acc14731763e63109de74951e8b73a4d877dd
+                      - cell "Jun 13, 20261 hour ago" [ref=e345]:
+                        - generic [ref=e346]: Jun 13, 20261 hour ago
+                    - 'row "components.json, (File) feat: initial TimeSync Sub-project 1 - scaffold, auth, UI shell Jun 13, 20261 hour ago" [ref=e347]':
+                      - cell "components.json, (File)" [ref=e348]:
+                        - generic [ref=e349]:
+                          - img [ref=e350]
+                          - link "components.json, (File)" [ref=e355] [cursor=pointer]:
+                            - /url: /hasanuzzamanpriyam/TimeSync/blob/main/components.json
+                            - text: components.json
+                      - 'cell "feat: initial TimeSync Sub-project 1 - scaffold, auth, UI shell" [ref=e356]':
+                        - 'link "feat: initial TimeSync Sub-project 1 - scaffold, auth, UI shell" [ref=e359] [cursor=pointer]':
+                          - /url: /hasanuzzamanpriyam/TimeSync/commit/d17acc14731763e63109de74951e8b73a4d877dd
+                      - cell "Jun 13, 20261 hour ago" [ref=e360]:
+                        - generic [ref=e361]: Jun 13, 20261 hour ago
+                    - 'row "index.html, (File) feat: initial TimeSync Sub-project 1 - scaffold, auth, UI shell Jun 13, 20261 hour ago" [ref=e362]':
+                      - cell "index.html, (File)" [ref=e363]:
+                        - generic [ref=e364]:
+                          - img [ref=e365]
+                          - link "index.html, (File)" [ref=e370] [cursor=pointer]:
+                            - /url: /hasanuzzamanpriyam/TimeSync/blob/main/index.html
+                            - text: index.html
+                      - 'cell "feat: initial TimeSync Sub-project 1 - scaffold, auth, UI shell" [ref=e371]':
+                        - 'link "feat: initial TimeSync Sub-project 1 - scaffold, auth, UI shell" [ref=e374] [cursor=pointer]':
+                          - /url: /hasanuzzamanpriyam/TimeSync/commit/d17acc14731763e63109de74951e8b73a4d877dd
+                      - cell "Jun 13, 20261 hour ago" [ref=e375]:
+                        - generic [ref=e376]: Jun 13, 20261 hour ago
+                    - 'row "package-lock.json, (File) fix: regenerate package-lock.json to include @radix-ui/react-tabs in … Jun 13, 20266 minutes ago" [ref=e377]':
+                      - cell "package-lock.json, (File)" [ref=e378]:
+                        - generic [ref=e379]:
+                          - img [ref=e380]
+                          - link "package-lock.json, (File)" [ref=e385] [cursor=pointer]:
+                            - /url: /hasanuzzamanpriyam/TimeSync/blob/main/package-lock.json
+                            - text: package-lock.json
+                      - 'cell "fix: regenerate package-lock.json to include @radix-ui/react-tabs in …" [ref=e386]':
+                        - 'link "fix: regenerate package-lock.json to include @radix-ui/react-tabs in …" [ref=e389] [cursor=pointer]':
+                          - /url: /hasanuzzamanpriyam/TimeSync/commit/85b69c46449544480fadab063fa8ca71f6c5e615
+                      - cell "Jun 13, 20266 minutes ago" [ref=e390]:
+                        - generic [ref=e391]: Jun 13, 20266 minutes ago
+                    - 'row "package.json, (File) feat: TimeSync Sub-project 2 - tasks, timer, idle detection Jun 13, 20261 hour ago" [ref=e392]':
+                      - cell "package.json, (File)" [ref=e393]:
+                        - generic [ref=e394]:
+                          - img [ref=e395]
+                          - link "package.json, (File)" [ref=e400] [cursor=pointer]:
+                            - /url: /hasanuzzamanpriyam/TimeSync/blob/main/package.json
+                            - text: package.json
+                      - 'cell "feat: TimeSync Sub-project 2 - tasks, timer, idle detection" [ref=e401]':
+                        - 'link "feat: TimeSync Sub-project 2 - tasks, timer, idle detection" [ref=e404] [cursor=pointer]':
+                          - /url: /hasanuzzamanpriyam/TimeSync/commit/145af07d828281a21ae8e8b7bc288ce1da94c5a7
+                      - cell "Jun 13, 20261 hour ago" [ref=e405]:
+                        - generic [ref=e406]: Jun 13, 20261 hour ago
+                    - 'row "postcss.config.js, (File) feat: initial TimeSync Sub-project 1 - scaffold, auth, UI shell Jun 13, 20261 hour ago" [ref=e407]':
+                      - cell "postcss.config.js, (File)" [ref=e408]:
+                        - generic [ref=e409]:
+                          - img [ref=e410]
+                          - link "postcss.config.js, (File)" [ref=e415] [cursor=pointer]:
+                            - /url: /hasanuzzamanpriyam/TimeSync/blob/main/postcss.config.js
+                            - text: postcss.config.js
+                      - 'cell "feat: initial TimeSync Sub-project 1 - scaffold, auth, UI shell" [ref=e416]':
+                        - 'link "feat: initial TimeSync Sub-project 1 - scaffold, auth, UI shell" [ref=e419] [cursor=pointer]':
+                          - /url: /hasanuzzamanpriyam/TimeSync/commit/d17acc14731763e63109de74951e8b73a4d877dd
+                      - cell "Jun 13, 20261 hour ago" [ref=e420]:
+                        - generic [ref=e421]: Jun 13, 20261 hour ago
+                    - 'row "tailwind.config.ts, (File) feat: initial TimeSync Sub-project 1 - scaffold, auth, UI shell Jun 13, 20261 hour ago" [ref=e422]':
+                      - cell "tailwind.config.ts, (File)" [ref=e423]:
+                        - generic [ref=e424]:
+                          - img [ref=e425]
+                          - link "tailwind.config.ts, (File)" [ref=e430] [cursor=pointer]:
+                            - /url: /hasanuzzamanpriyam/TimeSync/blob/main/tailwind.config.ts
+                            - text: tailwind.config.ts
+                      - 'cell "feat: initial TimeSync Sub-project 1 - scaffold, auth, UI shell" [ref=e431]':
+                        - 'link "feat: initial TimeSync Sub-project 1 - scaffold, auth, UI shell" [ref=e434] [cursor=pointer]':
+                          - /url: /hasanuzzamanpriyam/TimeSync/commit/d17acc14731763e63109de74951e8b73a4d877dd
+                      - cell "Jun 13, 20261 hour ago" [ref=e435]:
+                        - generic [ref=e436]: Jun 13, 20261 hour ago
+                    - 'row "tsconfig.json, (File) feat: initial TimeSync Sub-project 1 - scaffold, auth, UI shell Jun 13, 20261 hour ago" [ref=e437]':
+                      - cell "tsconfig.json, (File)" [ref=e438]:
+                        - generic [ref=e439]:
+                          - img [ref=e440]
+                          - link "tsconfig.json, (File)" [ref=e445] [cursor=pointer]:
+                            - /url: /hasanuzzamanpriyam/TimeSync/blob/main/tsconfig.json
+                            - text: tsconfig.json
+                      - 'cell "feat: initial TimeSync Sub-project 1 - scaffold, auth, UI shell" [ref=e446]':
+                        - 'link "feat: initial TimeSync Sub-project 1 - scaffold, auth, UI shell" [ref=e449] [cursor=pointer]':
+                          - /url: /hasanuzzamanpriyam/TimeSync/commit/d17acc14731763e63109de74951e8b73a4d877dd
+                      - cell "Jun 13, 20261 hour ago" [ref=e450]:
+                        - generic [ref=e451]: Jun 13, 20261 hour ago
+                    - 'row "tsconfig.node.json, (File) feat: initial TimeSync Sub-project 1 - scaffold, auth, UI shell Jun 13, 20261 hour ago" [ref=e452]':
+                      - cell "tsconfig.node.json, (File)" [ref=e453]:
+                        - generic [ref=e454]:
+                          - img [ref=e455]
+                          - link "tsconfig.node.json, (File)" [ref=e460] [cursor=pointer]:
+                            - /url: /hasanuzzamanpriyam/TimeSync/blob/main/tsconfig.node.json
+                            - text: tsconfig.node.json
+                      - 'cell "feat: initial TimeSync Sub-project 1 - scaffold, auth, UI shell" [ref=e461]':
+                        - 'link "feat: initial TimeSync Sub-project 1 - scaffold, auth, UI shell" [ref=e464] [cursor=pointer]':
+                          - /url: /hasanuzzamanpriyam/TimeSync/commit/d17acc14731763e63109de74951e8b73a4d877dd
+                      - cell "Jun 13, 20261 hour ago" [ref=e465]:
+                        - generic [ref=e466]: Jun 13, 20261 hour ago
+                    - 'row "vite.config.ts, (File) feat: initial TimeSync Sub-project 1 - scaffold, auth, UI shell Jun 13, 20261 hour ago" [ref=e467]':
+                      - cell "vite.config.ts, (File)" [ref=e468]:
+                        - generic [ref=e469]:
+                          - img [ref=e470]
+                          - link "vite.config.ts, (File)" [ref=e475] [cursor=pointer]:
+                            - /url: /hasanuzzamanpriyam/TimeSync/blob/main/vite.config.ts
+                            - text: vite.config.ts
+                      - 'cell "feat: initial TimeSync Sub-project 1 - scaffold, auth, UI shell" [ref=e476]':
+                        - 'link "feat: initial TimeSync Sub-project 1 - scaffold, auth, UI shell" [ref=e479] [cursor=pointer]':
+                          - /url: /hasanuzzamanpriyam/TimeSync/commit/d17acc14731763e63109de74951e8b73a4d877dd
+                      - cell "Jun 13, 20261 hour ago" [ref=e480]:
+                        - generic [ref=e481]: Jun 13, 20261 hour ago
+              - generic [ref=e483]:
+                - generic [ref=e484]:
+                  - heading "Repository files navigation" [level=2] [ref=e485]
+                  - navigation "Repository files" [ref=e486]:
+                    - list [ref=e487]:
+                      - listitem [ref=e488]:
+                        - link "README" [ref=e489] [cursor=pointer]:
+                          - /url: "#"
+                          - img [ref=e491]
+                          - generic [ref=e493]: README
+                - article [ref=e495]: ��# TimeSync
+          - generic [ref=e499]:
+            - generic [ref=e502]:
+              - heading "About" [level=2] [ref=e503]
+              - generic [ref=e504]: No description, website, or topics provided.
+              - heading "Resources" [level=3] [ref=e505]
+              - link "Readme" [ref=e507] [cursor=pointer]:
+                - /url: "#readme-ov-file"
+                - img [ref=e508]
+                - text: Readme
+              - link "Activity" [ref=e511] [cursor=pointer]:
+                - /url: /hasanuzzamanpriyam/TimeSync/activity
+                - img [ref=e512]
+                - text: Activity
+              - heading "Stars" [level=3] [ref=e514]
+              - link "0 stars" [ref=e516] [cursor=pointer]:
+                - /url: /hasanuzzamanpriyam/TimeSync/stargazers
+                - img [ref=e517]
+                - strong [ref=e519]: "0"
+                - text: stars
+              - heading "Watchers" [level=3] [ref=e520]
+              - link "0 watching" [ref=e522] [cursor=pointer]:
+                - /url: /hasanuzzamanpriyam/TimeSync/watchers
+                - img [ref=e523]
+                - strong [ref=e525]: "0"
+                - text: watching
+              - heading "Forks" [level=3] [ref=e526]
+              - link "0 forks" [ref=e528] [cursor=pointer]:
+                - /url: /hasanuzzamanpriyam/TimeSync/forks
+                - img [ref=e529]
+                - strong [ref=e531]: "0"
+                - text: forks
+              - link "Report repository" [ref=e533] [cursor=pointer]:
+                - /url: /contact/report-content?content_url=https%3A%2F%2Fgithub.com%2Fhasanuzzamanpriyam%2FTimeSync&report=hasanuzzamanpriyam+%28user%29
+            - generic [ref=e535]:
+              - heading "Releases" [level=2] [ref=e536]:
+                - link "Releases" [ref=e537] [cursor=pointer]:
+                  - /url: /hasanuzzamanpriyam/TimeSync/releases
+              - generic [ref=e538]: No releases published
+            - generic [ref=e540]:
+              - heading "Packages" [level=2] [ref=e541]:
+                - link "Packages" [ref=e542] [cursor=pointer]:
+                  - /url: /users/hasanuzzamanpriyam/packages?repo_name=TimeSync
+              - generic [ref=e543]: No packages published
+            - generic [ref=e545]:
+              - heading "Contributors 1" [level=2] [ref=e546]:
+                - link "Contributors 1" [ref=e547] [cursor=pointer]:
+                  - /url: /hasanuzzamanpriyam/TimeSync/graphs/contributors
+                  - text: Contributors
+                  - generic "1" [ref=e548]
+              - list [ref=e549]:
+                - listitem [ref=e550]:
+                  - link "@hasanuzzamanpriyam" [ref=e551] [cursor=pointer]:
+                    - /url: https://github.com/hasanuzzamanpriyam
+                    - img "@hasanuzzamanpriyam" [ref=e552]
+                  - link "hasanuzzamanpriyam Hasanuzzaman-Priyam" [ref=e554] [cursor=pointer]:
+                    - /url: https://github.com/hasanuzzamanpriyam
+                    - strong [ref=e555]: hasanuzzamanpriyam
+                    - text: Hasanuzzaman-Priyam
+            - generic [ref=e557]:
+              - heading "Languages" [level=2] [ref=e558]
+              - list [ref=e565]:
+                - listitem [ref=e566]:
+                  - link "TypeScript 95.6%" [ref=e567] [cursor=pointer]:
+                    - /url: /hasanuzzamanpriyam/TimeSync/search?l=typescript
+                    - img [ref=e568]
+                    - generic [ref=e570]: TypeScript
+                    - generic [ref=e571]: 95.6%
+                - listitem [ref=e572]:
+                  - link "JavaScript 2.0%" [ref=e573] [cursor=pointer]:
+                    - /url: /hasanuzzamanpriyam/TimeSync/search?l=javascript
+                    - img [ref=e574]
+                    - generic [ref=e576]: JavaScript
+                    - generic [ref=e577]: 2.0%
+                - listitem [ref=e578]:
+                  - link "CSS 1.4%" [ref=e579] [cursor=pointer]:
+                    - /url: /hasanuzzamanpriyam/TimeSync/search?l=css
+                    - img [ref=e580]
+                    - generic [ref=e582]: CSS
+                    - generic [ref=e583]: 1.4%
+                - listitem [ref=e584]:
+                  - generic [ref=e585]:
+                    - img [ref=e586]
+                    - generic [ref=e588]: Other
+                    - generic [ref=e589]: 1.0%

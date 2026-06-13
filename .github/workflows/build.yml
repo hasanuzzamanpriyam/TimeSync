@@ -70,25 +70,47 @@ jobs:
       - name: Build frontend (Vite bundle)
         run: npx vite build 2>&1
 
-      - name: Build Tauri native app
+      - name: Build Tauri native app (with log capture)
         shell: bash
-        working-directory: ./
         run: |
-          echo "=== CWD ==="
-          pwd
-          echo "=== checking dist/ ==="
-          ls -la dist/ 2>&1 || echo "dist/ NOT FOUND"
-          echo "=== checking src-tauri/dist ==="
-          ls -la src-tauri/dist/ 2>&1 || echo "src-tauri/dist/ NOT FOUND"
-          echo "=== running tauri build ==="
-          npx tauri build --verbose --bundles ${{ matrix.bundle }} 2>&1
+          mkdir -p build-logs
+          echo "PWD=$(pwd)" > build-logs/env.txt
+          echo "RUNNER_OS=$RUNNER_OS" >> build-logs/env.txt
+          echo "=== dist/ ===" >> build-logs/dist-check.txt
+          find dist/ -type f >> build-logs/dist-check.txt 2>&1 || echo "(find returned non-zero)"
+          echo "dist/ contents:"; cat build-logs/dist-check.txt
+          echo "=== CARGO BUILD ==="
+          cd src-tauri
+          cargo build --release > ${{ github.workspace }}/build-logs/cargo-build.txt 2>&1
+          CARGO_EXIT=$?
+          cd ${{ github.workspace }}
+          echo "CARGO_EXIT=$CARGO_EXIT"
+          echo "=== TAURI BUILD ==="
+          npx tauri build --verbose --bundles ${{ matrix.bundle }} > build-logs/tauri-build.txt 2>&1
+          TAURI_EXIT=$?
+          echo "TAURI_EXIT=$TAURI_EXIT"
+          # Print tail of both logs to annotations
+          echo "=== CARGO BUILD LOG (last 80 lines) ==="
+          tail -80 build-logs/cargo-build.txt
+          echo "=== TAURI BUILD LOG (last 80 lines) ==="
+          tail -80 build-logs/tauri-build.txt
+          if [ $CARGO_EXIT -ne 0 ] || [ $TAURI_EXIT -ne 0 ]; then exit 1; fi
         env:
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
 
-      - name: Upload artifact
+      - name: Upload build logs
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          if-no-files-found: error
+          if-no-files-found: warn
+          name: build-logs-${{ matrix.os }}
+          path: build-logs/
+
+      - name: Upload artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          if-no-files-found: warn
           name: TimeSync-${{ matrix.os }}
           path: src-tauri/target/release/bundle/${{ matrix.bundle }}/*

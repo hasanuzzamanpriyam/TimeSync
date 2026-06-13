@@ -1,0 +1,43 @@
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - link "Skip to content" [ref=e4] [cursor=pointer]:
+      - /url: "#start-of-content"
+    - banner [ref=e6]:
+      - heading "Navigation Menu" [level=2] [ref=e7]
+      - generic [ref=e8]:
+        - link "Homepage" [ref=e10] [cursor=pointer]:
+          - /url: /
+          - img [ref=e11]
+        - generic [ref=e13]:
+          - navigation "Global" [ref=e16]
+          - generic [ref=e46]
+  - main [ref=e62]:
+    - generic [ref=e63]:
+      - generic [ref=e64]:
+        - generic [ref=e66]:
+          - img [ref=e67]
+          - link "hasanuzzamanpriyam" [ref=e70] [cursor=pointer]:
+            - /url: /hasanuzzamanpriyam
+          - generic [ref=e71]: /
+          - strong [ref=e72]
+          - generic [ref=e74]: Public
+        - generic [ref=e75]:
+          - list
+      - navigation "Repository" [ref=e91]:
+        - list [ref=e92]:
+          - listitem [ref=e93]
+          - listitem [ref=e98]
+          - listitem [ref=e104]
+          - listitem [ref=e109]
+          - listitem [ref=e114]
+          - listitem [ref=e119]
+          - listitem [ref=e124]
+    - generic [ref=e130]:
+      - 'heading "Actions: hasanuzzamanpriyam/TimeSync" [level=1] [ref=e131]'
+      - generic [ref=e134]:
+        - generic [ref=e135]:
+          - heading "Actions" [level=2] [ref=e137]
+          - navigation "Actions Workflows" [ref=e141]
+        - generic [ref=e169]:
+          - generic [ref=e170]
+          - generic [ref=e182]

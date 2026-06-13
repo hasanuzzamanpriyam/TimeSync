@@ -1,0 +1,373 @@
+- generic [ref=e2]:
+  - generic [ref=e3]:
+    - link "Skip to content" [ref=e4] [cursor=pointer]:
+      - /url: "#start-of-content"
+    - banner [ref=e6]:
+      - heading "Navigation Menu" [level=2] [ref=e7]
+      - generic [ref=e8]:
+        - link "Homepage" [ref=e10] [cursor=pointer]:
+          - /url: /
+          - img [ref=e11]
+        - generic [ref=e13]:
+          - navigation "Global" [ref=e16]:
+            - list [ref=e17]:
+              - listitem [ref=e18]:
+                - button "Platform" [ref=e20] [cursor=pointer]:
+                  - text: Platform
+                  - img [ref=e21]
+              - listitem [ref=e23]:
+                - button "Solutions" [ref=e25] [cursor=pointer]:
+                  - text: Solutions
+                  - img [ref=e26]
+              - listitem [ref=e28]:
+                - button "Resources" [ref=e30] [cursor=pointer]:
+                  - text: Resources
+                  - img [ref=e31]
+              - listitem [ref=e33]:
+                - button "Open Source" [ref=e35] [cursor=pointer]:
+                  - text: Open Source
+                  - img [ref=e36]
+              - listitem [ref=e38]:
+                - button "Enterprise" [ref=e40] [cursor=pointer]:
+                  - text: Enterprise
+                  - img [ref=e41]
+              - listitem [ref=e43]:
+                - link "Pricing" [ref=e44] [cursor=pointer]:
+                  - /url: https://github.com/pricing
+                  - generic [ref=e45]: Pricing
+          - generic [ref=e46]:
+            - button "Search or jump to…" [ref=e49] [cursor=pointer]:
+              - img [ref=e51]
+            - link "Sign in" [ref=e54] [cursor=pointer]:
+              - /url: /login?return_to=https%3A%2F%2Fgithub.com%2Fhasanuzzamanpriyam%2FTimeSync%2Factions
+            - link "Sign up" [ref=e55] [cursor=pointer]:
+              - /url: /signup?ref_cta=Sign+up&ref_loc=header+logged+out&ref_page=%2F%3Cuser-name%3E%2F%3Crepo-name%3E%2Factions%2Findex&source=header-repo&source_repo=hasanuzzamanpriyam%2FTimeSync
+            - button "Appearance settings" [ref=e58] [cursor=pointer]:
+              - img
+  - main [ref=e62]:
+    - generic [ref=e63]:
+      - generic [ref=e64]:
+        - generic [ref=e66]:
+          - img [ref=e67]
+          - link "hasanuzzamanpriyam" [ref=e70] [cursor=pointer]:
+            - /url: /hasanuzzamanpriyam
+          - generic [ref=e71]: /
+          - strong [ref=e72]:
+            - link "TimeSync" [ref=e73] [cursor=pointer]:
+              - /url: /hasanuzzamanpriyam/TimeSync
+          - generic [ref=e74]: Public
+        - generic [ref=e75]:
+          - list:
+            - listitem [ref=e76]:
+              - link "You must be signed in to change notification settings" [ref=e77] [cursor=pointer]:
+                - /url: /login?return_to=%2Fhasanuzzamanpriyam%2FTimeSync
+                - img [ref=e78]
+                - text: Notifications
+            - listitem [ref=e80]:
+              - link "Fork 0" [ref=e81] [cursor=pointer]:
+                - /url: /login?return_to=%2Fhasanuzzamanpriyam%2FTimeSync
+                - img [ref=e82]
+                - text: Fork
+                - generic "0" [ref=e84]
+            - listitem [ref=e85]:
+              - link "You must be signed in to star a repository" [ref=e87] [cursor=pointer]:
+                - /url: /login?return_to=%2Fhasanuzzamanpriyam%2FTimeSync
+                - img [ref=e88]
+                - text: Star
+                - generic "0 users starred this repository" [ref=e90]: "0"
+      - navigation "Repository" [ref=e91]:
+        - list [ref=e92]:
+          - listitem [ref=e93]:
+            - link "Code" [ref=e94] [cursor=pointer]:
+              - /url: /hasanuzzamanpriyam/TimeSync
+              - img [ref=e95]
+              - generic [ref=e97]: Code
+          - listitem [ref=e98]:
+            - link "Issues" [ref=e99] [cursor=pointer]:
+              - /url: /hasanuzzamanpriyam/TimeSync/issues
+              - img [ref=e100]
+              - generic [ref=e103]: Issues
+          - listitem [ref=e104]:
+            - link "Pull requests" [ref=e105] [cursor=pointer]:
+              - /url: /hasanuzzamanpriyam/TimeSync/pulls
+              - img [ref=e106]
+              - generic [ref=e108]: Pull requests
+          - listitem [ref=e109]:
+            - link "Actions" [ref=e110] [cursor=pointer]:
+              - /url: /hasanuzzamanpriyam/TimeSync/actions
+              - img [ref=e111]
+              - generic [ref=e113]: Actions
+          - listitem [ref=e114]:
+            - link "Projects" [ref=e115] [cursor=pointer]:
+              - /url: /hasanuzzamanpriyam/TimeSync/projects
+              - img [ref=e116]
+              - generic [ref=e118]: Projects
+          - listitem [ref=e119]:
+            - link "Security and quality" [ref=e120] [cursor=pointer]:
+              - /url: /hasanuzzamanpriyam/TimeSync/security
+              - img [ref=e121]
+              - generic [ref=e123]: Security and quality
+          - listitem [ref=e124]:
+            - link "Insights" [ref=e125] [cursor=pointer]:
+              - /url: /hasanuzzamanpriyam/TimeSync/pulse
+              - img [ref=e126]
+              - generic [ref=e128]: Insights
+    - generic [ref=e130]:
+      - 'heading "Actions: hasanuzzamanpriyam/TimeSync" [level=1] [ref=e131]'
+      - generic [ref=e134]:
+        - generic [ref=e135]:
+          - heading "Actions" [level=2] [ref=e137]
+          - navigation "Actions Workflows" [ref=e141]:
+            - list [ref=e143]:
+              - listitem [ref=e144]:
+                - link "All workflows" [ref=e145] [cursor=pointer]:
+                  - /url: /hasanuzzamanpriyam/TimeSync/actions
+                  - generic [ref=e146]: All workflows
+              - listitem [ref=e147]
+              - listitem [ref=e148]:
+                - list "Workflows" [ref=e152]:
+                  - listitem [ref=e153]:
+                    - link "Build TimeSync" [ref=e154] [cursor=pointer]:
+                      - /url: /hasanuzzamanpriyam/TimeSync/actions/workflows/build.yml
+                      - generic [ref=e155]: Build TimeSync
+              - listitem [ref=e156]
+              - listitem [ref=e157]:
+                - generic [ref=e160]:
+                  - heading "Management" [level=3] [ref=e162]
+                  - list "Management" [ref=e163]:
+                    - listitem [ref=e164]:
+                      - link "Caches" [ref=e165] [cursor=pointer]:
+                        - /url: /hasanuzzamanpriyam/TimeSync/actions/caches
+                        - generic:
+                          - img
+                        - generic [ref=e166]: Caches
+        - generic [ref=e169]:
+          - generic [ref=e170]:
+            - generic [ref=e171]:
+              - heading "All workflows" [level=2] [ref=e173]:
+                - generic [ref=e175]: All workflows
+              - search [ref=e179]:
+                - combobox "Filter workflow runs" [ref=e180]
+                - img
+            - generic [ref=e181]: Showing runs from all workflows
+          - generic [ref=e182]:
+            - generic [ref=e183]:
+              - strong [ref=e186]: 7 workflow runs
+              - generic [ref=e187]:
+                - button "Workflow" [ref=e191] [cursor=pointer]:
+                  - generic [ref=e193]: Workflow
+                  - generic:
+                    - img
+                - button "Event" [ref=e197] [cursor=pointer]:
+                  - generic [ref=e199]: Event
+                  - generic:
+                    - img
+                - button "Status" [ref=e203] [cursor=pointer]:
+                  - generic [ref=e205]: Status
+                  - generic:
+                    - img
+                - button "Branch" [ref=e209] [cursor=pointer]:
+                  - generic [ref=e211]: Branch
+                  - generic:
+                    - img
+                - button "Actor" [ref=e215] [cursor=pointer]:
+                  - generic [ref=e217]: Actor
+                  - generic:
+                    - img
+            - generic [ref=e218]:
+              - generic [ref=e220]:
+                - generic [ref=e221]:
+                  - 'link "currently running: Run 7 of Build TimeSync. fix: downgrade @radix-ui/react-tabs from 1.1.14 to 1.1.13 to resolve …" [ref=e222] [cursor=pointer]':
+                    - /url: /hasanuzzamanpriyam/TimeSync/actions/runs/27446410927
+                    - img "currently running:" [ref=e225]
+                    - generic [ref=e229]: "fix: downgrade @radix-ui/react-tabs from 1.1.14 to 1.1.13 to resolve …"
+                  - generic [ref=e230]:
+                    - text: "Build TimeSync #7:"
+                    - generic [ref=e231]:
+                      - text: Commit
+                      - link "de5a9f4" [ref=e232] [cursor=pointer]:
+                        - /url: /hasanuzzamanpriyam/TimeSync/commit/de5a9f4dae39cdcaf31c40459789089908246cc0
+                      - text: pushed by
+                      - link "hasanuzzamanpriyam" [ref=e233] [cursor=pointer]:
+                        - /url: /hasanuzzamanpriyam
+                - link "main" [ref=e235] [cursor=pointer]:
+                  - /url: /hasanuzzamanpriyam/TimeSync/tree/refs/heads/main
+                - generic [ref=e237]:
+                  - generic [ref=e238]:
+                    - generic [ref=e239]:
+                      - img [ref=e241]
+                      - generic "Jun 13, 2026, 4:21 AM GMT+6" [ref=e243]: now
+                    - generic [ref=e244]:
+                      - img [ref=e245]
+                      - text: In progress
+                  - group [ref=e248]:
+                    - generic "Show options" [ref=e249] [cursor=pointer]:
+                      - img "Show options" [ref=e250]
+              - generic [ref=e253]:
+                - generic [ref=e254]:
+                  - 'link "failed: Run 6 of Build TimeSync. fix: add tsconfig paths mapping for @radix-ui/react-tabs, separate fr…" [ref=e255] [cursor=pointer]':
+                    - /url: /hasanuzzamanpriyam/TimeSync/actions/runs/27446173700
+                    - img "failed:" [ref=e257]
+                    - generic [ref=e259]: "fix: add tsconfig paths mapping for @radix-ui/react-tabs, separate fr…"
+                  - generic [ref=e260]:
+                    - text: "Build TimeSync #6:"
+                    - generic [ref=e261]:
+                      - text: Commit
+                      - link "995ecb6" [ref=e262] [cursor=pointer]:
+                        - /url: /hasanuzzamanpriyam/TimeSync/commit/995ecb6e1b8d6b0ae8694f35c8d510b4dba22fd9
+                      - text: pushed by
+                      - link "hasanuzzamanpriyam" [ref=e263] [cursor=pointer]:
+                        - /url: /hasanuzzamanpriyam
+                - link "main" [ref=e265] [cursor=pointer]:
+                  - /url: /hasanuzzamanpriyam/TimeSync/tree/refs/heads/main
+                - generic [ref=e267]:
+                  - generic [ref=e268]:
+                    - generic [ref=e269]:
+                      - img [ref=e271]
+                      - generic "Jun 13, 2026, 4:15 AM GMT+6" [ref=e273]: 6 minutes ago
+                    - generic [ref=e274]:
+                      - img "Run duration" [ref=e275]
+                      - text: 1m 46s
+                  - group [ref=e278]:
+                    - generic "Show options" [ref=e279] [cursor=pointer]:
+                      - img "Show options" [ref=e280]
+              - generic [ref=e283]:
+                - generic [ref=e284]:
+                  - 'link "failed: Run 5 of Build TimeSync. fix: separate frontend build from tauri native build to isolate build…" [ref=e285] [cursor=pointer]':
+                    - /url: /hasanuzzamanpriyam/TimeSync/actions/runs/27446000926
+                    - img "failed:" [ref=e287]
+                    - generic [ref=e289]: "fix: separate frontend build from tauri native build to isolate build…"
+                  - generic [ref=e290]:
+                    - text: "Build TimeSync #5:"
+                    - generic [ref=e291]:
+                      - text: Commit
+                      - link "ecf78fb" [ref=e292] [cursor=pointer]:
+                        - /url: /hasanuzzamanpriyam/TimeSync/commit/ecf78fbc0ab51b77a4fb60409d85e8336e86e503
+                      - text: pushed by
+                      - link "hasanuzzamanpriyam" [ref=e293] [cursor=pointer]:
+                        - /url: /hasanuzzamanpriyam
+                - link "main" [ref=e295] [cursor=pointer]:
+                  - /url: /hasanuzzamanpriyam/TimeSync/tree/refs/heads/main
+                - generic [ref=e297]:
+                  - generic [ref=e298]:
+                    - generic [ref=e299]:
+                      - img [ref=e301]
+                      - generic "Jun 13, 2026, 4:11 AM GMT+6" [ref=e303]: 10 minutes ago
+                    - generic [ref=e304]:
+                      - img "Run duration" [ref=e305]
+                      - text: 1m 2s
+                  - group [ref=e308]:
+                    - generic "Show options" [ref=e309] [cursor=pointer]:
+                      - img "Show options" [ref=e310]
+              - generic [ref=e313]:
+                - generic [ref=e314]:
+                  - 'link "failed: Run 4 of Build TimeSync. fix: use bash shell for debug step, runner.os expression invalid in s…" [ref=e315] [cursor=pointer]':
+                    - /url: /hasanuzzamanpriyam/TimeSync/actions/runs/27445854484
+                    - img "failed:" [ref=e317]
+                    - generic [ref=e319]: "fix: use bash shell for debug step, runner.os expression invalid in s…"
+                  - generic [ref=e320]:
+                    - text: "Build TimeSync #4:"
+                    - generic [ref=e321]:
+                      - text: Commit
+                      - link "b0befa3" [ref=e322] [cursor=pointer]:
+                        - /url: /hasanuzzamanpriyam/TimeSync/commit/b0befa358a8fda77bc0c08c69ea0f257ca52d6d6
+                      - text: pushed by
+                      - link "hasanuzzamanpriyam" [ref=e323] [cursor=pointer]:
+                        - /url: /hasanuzzamanpriyam
+                - link "main" [ref=e325] [cursor=pointer]:
+                  - /url: /hasanuzzamanpriyam/TimeSync/tree/refs/heads/main
+                - generic [ref=e327]:
+                  - generic [ref=e328]:
+                    - generic [ref=e329]:
+                      - img [ref=e331]
+                      - generic "Jun 13, 2026, 4:07 AM GMT+6" [ref=e333]: 14 minutes ago
+                    - generic [ref=e334]:
+                      - img "Run duration" [ref=e335]
+                      - text: 1m 7s
+                  - group [ref=e338]:
+                    - generic "Show options" [ref=e339] [cursor=pointer]:
+                      - img "Show options" [ref=e340]
+              - generic [ref=e343]:
+                - generic [ref=e344]:
+                  - 'link "failed: Run 3 of Build TimeSync. debug: add dependency resolution debug step to CI workflow" [ref=e345] [cursor=pointer]':
+                    - /url: /hasanuzzamanpriyam/TimeSync/actions/runs/27445794420
+                    - img "failed:" [ref=e347]
+                    - generic [ref=e349]: "debug: add dependency resolution debug step to CI workflow"
+                  - generic [ref=e350]:
+                    - text: "Build TimeSync #3:"
+                    - generic [ref=e351]:
+                      - text: Commit
+                      - link "501697d" [ref=e352] [cursor=pointer]:
+                        - /url: /hasanuzzamanpriyam/TimeSync/commit/501697d239a3fb3db33be3fd942526512e8f5b39
+                      - text: pushed by
+                      - link "hasanuzzamanpriyam" [ref=e353] [cursor=pointer]:
+                        - /url: /hasanuzzamanpriyam
+                - link "main" [ref=e355] [cursor=pointer]:
+                  - /url: /hasanuzzamanpriyam/TimeSync
+                - generic [ref=e357]:
+                  - generic [ref=e358]:
+                    - generic [ref=e359]:
+                      - img [ref=e361]
+                      - generic "Jun 13, 2026, 4:06 AM GMT+6" [ref=e363]: 15 minutes ago
+                    - generic [ref=e364]:
+                      - img [ref=e365]
+                      - text: Failure
+                  - group [ref=e368]:
+                    - generic "Show options" [ref=e369] [cursor=pointer]:
+                      - img "Show options" [ref=e370]
+              - generic [ref=e373]:
+                - generic [ref=e374]:
+                  - 'link "failed: Run 2 of Build TimeSync. fix: regenerate package-lock.json to include @radix-ui/react-tabs in …" [ref=e375] [cursor=pointer]':
+                    - /url: /hasanuzzamanpriyam/TimeSync/actions/runs/27445616031
+                    - img "failed:" [ref=e377]
+                    - generic [ref=e379]: "fix: regenerate package-lock.json to include @radix-ui/react-tabs in …"
+                  - generic [ref=e380]:
+                    - text: "Build TimeSync #2:"
+                    - generic [ref=e381]:
+                      - text: Commit
+                      - link "85b69c4" [ref=e382] [cursor=pointer]:
+                        - /url: /hasanuzzamanpriyam/TimeSync/commit/85b69c46449544480fadab063fa8ca71f6c5e615
+                      - text: pushed by
+                      - link "hasanuzzamanpriyam" [ref=e383] [cursor=pointer]:
+                        - /url: /hasanuzzamanpriyam
+                - link "main" [ref=e385] [cursor=pointer]:
+                  - /url: /hasanuzzamanpriyam/TimeSync/tree/refs/heads/main
+                - generic [ref=e387]:
+                  - generic [ref=e388]:
+                    - generic [ref=e389]:
+                      - img [ref=e391]
+                      - generic "Jun 13, 2026, 4:02 AM GMT+6" [ref=e393]: 19 minutes ago
+                    - generic [ref=e394]:
+                      - img "Run duration" [ref=e395]
+                      - text: 56s
+                  - group [ref=e398]:
+                    - generic "Show options" [ref=e399] [cursor=pointer]:
+                      - img "Show options" [ref=e400]
+              - generic [ref=e403]:
+                - generic [ref=e404]:
+                  - 'link "failed: Run 1 of Build TimeSync. ci: add GitHub Actions cross-platform builds + app icons" [ref=e405] [cursor=pointer]':
+                    - /url: /hasanuzzamanpriyam/TimeSync/actions/runs/27445199386
+                    - img "failed:" [ref=e407]
+                    - generic [ref=e409]: "ci: add GitHub Actions cross-platform builds + app icons"
+                  - generic [ref=e410]:
+                    - text: "Build TimeSync #1:"
+                    - generic [ref=e411]:
+                      - text: Commit
+                      - link "5f59953" [ref=e412] [cursor=pointer]:
+                        - /url: /hasanuzzamanpriyam/TimeSync/commit/5f59953e0d6ef61550011d576943ab2de8f78ced
+                      - text: pushed by
+                      - link "hasanuzzamanpriyam" [ref=e413] [cursor=pointer]:
+                        - /url: /hasanuzzamanpriyam
+                - link "main" [ref=e415] [cursor=pointer]:
+                  - /url: /hasanuzzamanpriyam/TimeSync/tree/refs/heads/main
+                - generic [ref=e417]:
+                  - generic [ref=e418]:
+                    - generic [ref=e419]:
+                      - img [ref=e421]
+                      - generic "Jun 13, 2026, 3:53 AM GMT+6" [ref=e423]: 28 minutes ago
+                    - generic [ref=e424]:
+                      - img "Run duration" [ref=e425]
+                      - text: 1m 17s
+                  - group [ref=e428]:
+                    - generic "Show options" [ref=e429] [cursor=pointer]:
+                      - img "Show options" [ref=e430]
