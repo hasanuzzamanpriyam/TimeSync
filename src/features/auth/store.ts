@@ -20,7 +20,7 @@ interface AuthState {
   setUser: (user: User | null) => void;
   clearError: () => void;
   register: (username: string, email: string, password: string, fullName: string) => Promise<void>;
-  switchMode: (mode: AuthMode) => void;
+  switchMode: (mode: AuthMode) => Promise<void>;
 }
 
 interface LoginResult {
@@ -114,9 +114,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     }
   },
 
-  switchMode: (mode) => {
+  switchMode: async (mode) => {
     set({ authMode: mode });
-    get().logout();
+    await get().logout();
   },
 
   logout: async () => {
