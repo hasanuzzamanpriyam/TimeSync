@@ -88,16 +88,33 @@ jobs:
       - name: Try bare cargo build (diagnose)
         shell: bash
         run: |
-          set -o pipefail
           cd src-tauri
-          cargo build --release 2>&1 | tee ../cargo-output.txt; EXIT_CODE=$?
+          cargo build --release 2>&1 | tee ../cargo-output.txt; EXIT_CODE=${PIPESTATUS[0]}
           cd ..
           echo "Cargo exit code: $EXIT_CODE"
-          echo "=== LAST 30 LINES OF CARGO OUTPUT ===" >> "$GITHUB_STEP_SUMMARY"
-          tail -30 cargo-output.txt 2>/dev/null >> "$GITHUB_STEP_SUMMARY" || echo "(no cargo output)" >> "$GITHUB_STEP_SUMMARY"
+          {
+            echo "=== LAST 50 LINES ==="
+            tail -50 cargo-output.txt 2>/dev/null || echo "(no output)"
+            echo "=== ERROR LINES ==="
+            grep -n '^error' cargo-output.txt 2>/dev/null || echo "(no error lines)"
+            echo "=== LAST LINE ==="
+            tail -1 cargo-output.txt 2>/dev/null
+          } | tee -a cargo-summary.txt
           if [ $EXIT_CODE -ne 0 ]; then
+            LAST_LINE=$(tail -1 cargo-output.txt 2>/dev/null)
+            echo "::error title=cargo build failed::$LAST_LINE"
             exit $EXIT_CODE
           fi
+
+      - name: Upload cargo build output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          if-no-files-found: warn
+          name: cargo-output-${{ matrix.os }}
+          path: |
+            cargo-output.txt
+            cargo-summary.txt
 
       - name: Bundle Tauri app
         shell: bash
