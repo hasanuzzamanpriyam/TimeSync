@@ -21,6 +21,12 @@ pub fn run() {
             sql: include_str!("../db/migrations/003_sync.sql"),
             kind: MigrationKind::Up,
         },
+        Migration {
+            version: 4,
+            description: "add password_hash column to users",
+            sql: include_str!("../db/migrations/004_add_password_hash.sql"),
+            kind: MigrationKind::Up,
+        },
     ];
 
     tauri::Builder::default()
