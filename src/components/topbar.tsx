@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { useAuthStore } from "@/features/auth/store";
 import { Badge } from "@/components/ui/badge";
 import { useTheme } from "@/components/theme-provider";
@@ -17,13 +18,33 @@ import {
   LogOut,
   User,
   Bell,
+  Clock,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 export function TopBar() {
-  const { user, logout, authMode } = useAuthStore();
+  const { user, logout, authMode, loginTimestamp } = useAuthStore();
   const { theme, setTheme } = useTheme();
   const navigate = useNavigate();
+  const [elapsed, setElapsed] = useState("");
+
+  useEffect(() => {
+    if (!loginTimestamp) {
+      setElapsed("");
+      return;
+    }
+    const tick = () => {
+      const diff = Date.now() - loginTimestamp;
+      const mins = Math.floor(diff / 60000);
+      if (mins < 1) { setElapsed("<1m"); return; }
+      const h = Math.floor(mins / 60);
+      const m = mins % 60;
+      setElapsed(h > 0 ? `${h}h ${m}m` : `${m}m`);
+    };
+    tick();
+    const id = setInterval(tick, 60000);
+    return () => clearInterval(id);
+  }, [loginTimestamp]);
 
   const initials = user?.full_name
     ? user.full_name
@@ -36,15 +57,28 @@ export function TopBar() {
 
   return (
     <header className="flex h-14 items-center justify-between border-b bg-background px-6">
-      <div className="flex items-center gap-2">
-        {authMode && (
-          <Badge
-            variant={authMode === "demo" ? "secondary" : authMode === "erp" ? "default" : "outline"}
-            className="text-[10px] px-1.5 py-0 h-5"
-          >
-            {authMode === "demo" ? "Demo" : authMode === "erp" ? "ERP" : "Auto"}
-          </Badge>
+      <div className="flex items-center gap-3">
+        <Clock className="h-5 w-5 text-primary" />
+        <span className="text-sm font-semibold">TimeSync</span>
+        {user && (
+          <>
+            <span className="text-sm text-muted-foreground">|</span>
+            <span className="text-sm">{user.full_name}</span>
+            <span className="text-xs text-muted-foreground capitalize">({user.role})</span>
+            {elapsed && (
+              <>
+                <span className="text-sm text-muted-foreground">|</span>
+                <span className="text-sm text-muted-foreground">{elapsed}</span>
+              </>
+            )}
+          </>
         )}
+        <Badge
+          variant={authMode === "demo" ? "secondary" : authMode === "erp" ? "default" : "outline"}
+          className="text-[10px] px-1.5 py-0 h-5"
+        >
+          {authMode === "demo" ? "Demo" : authMode === "erp" ? "ERP" : "Auto"}
+        </Badge>
       </div>
 
       <div className="flex items-center gap-2">

@@ -13,6 +13,7 @@ interface AuthState {
   isLoading: boolean;
   error: string | null;
   authMode: AuthMode;
+  loginTimestamp: number | null;
   login: (username: string, password: string, rememberMe?: boolean) => Promise<void>;
   logout: () => Promise<void>;
   refreshToken: () => Promise<void>;
@@ -34,6 +35,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   isLoading: true,
   error: null,
   authMode: "auto",
+  loginTimestamp: null,
 
   login: async (username, password, _rememberMe = false) => {
     set({ isLoading: true, error: null });
@@ -96,6 +98,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         isAuthenticated: true,
         isLoading: false,
         error: null,
+        loginTimestamp: Date.now(),
       });
 
       // Best-effort ERP registration
@@ -125,7 +128,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     } catch {
       // ignore
     } finally {
-      set({ user: null, isAuthenticated: false, error: null });
+      set({ user: null, isAuthenticated: false, error: null, loginTimestamp: null });
     }
   },
 
@@ -221,6 +224,7 @@ async function loginViaErp(
     isAuthenticated: true,
     isLoading: false,
     error: null,
+    loginTimestamp: Date.now(),
   });
 }
 
@@ -259,5 +263,6 @@ async function loginViaLocal(
     isAuthenticated: true,
     isLoading: false,
     error: null,
+    loginTimestamp: Date.now(),
   });
 }
