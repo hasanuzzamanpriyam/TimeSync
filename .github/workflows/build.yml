@@ -62,59 +62,17 @@ jobs:
       - name: Install npm dependencies
         run: npm ci
 
-      - name: Check installed packages
-        shell: bash
-        run: |
-          echo "=== node_modules/@radix-ui/react-tabs/ ==="
-          ls -la node_modules/@radix-ui/react-tabs/dist/ 2>&1 || echo "DIST DIR NOT FOUND"
-          echo "=== npm ls ==="
-          npm ls @radix-ui/react-tabs 2>&1 || true
-
       - name: Build frontend (TypeScript check)
         run: npx tsc --noEmit 2>&1
 
       - name: Build frontend (Vite bundle)
         run: npx vite build 2>&1
 
-      - name: Check dist directory
-        shell: bash
-        run: |
-          if [ -d "dist" ]; then
-            echo "::notice::dist directory exists: $(ls dist/)"
-          else
-            echo "::error::dist directory NOT FOUND"
-          fi
-
-      - name: Try bare cargo build (diagnose)
+      - name: Build Rust binary
         shell: bash
         run: |
           cd src-tauri
-          cargo build --release 2>&1 | tee ../cargo-output.txt; EXIT_CODE=${PIPESTATUS[0]}
-          cd ..
-          echo "Cargo exit code: $EXIT_CODE"
-          {
-            echo "=== LAST 50 LINES ==="
-            tail -50 cargo-output.txt 2>/dev/null || echo "(no output)"
-            echo "=== ERROR LINES ==="
-            grep -n '^error' cargo-output.txt 2>/dev/null || echo "(no error lines)"
-            echo "=== LAST LINE ==="
-            tail -1 cargo-output.txt 2>/dev/null
-          } | tee -a cargo-summary.txt
-          if [ $EXIT_CODE -ne 0 ]; then
-            LAST_LINE=$(tail -1 cargo-output.txt 2>/dev/null)
-            echo "::error title=cargo build failed::$LAST_LINE"
-            exit $EXIT_CODE
-          fi
-
-      - name: Upload cargo build output
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          if-no-files-found: warn
-          name: cargo-output-${{ matrix.os }}
-          path: |
-            cargo-output.txt
-            cargo-summary.txt
+          cargo build --release 2>&1
 
       - name: Bundle Tauri app
         shell: bash
