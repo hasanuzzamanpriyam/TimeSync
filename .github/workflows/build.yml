@@ -92,11 +92,13 @@ jobs:
           cd src-tauri
           cargo build --release 2>&1 | tee ../cargo-output.txt; EXIT_CODE=$?
           cd ..
-          echo "::notice title=bare cargo build exit code::$EXIT_CODE"
-          echo "=== LAST 10 LINES OF CARGO OUTPUT ==="
-          tail -10 cargo-output.txt 2>/dev/null || echo "(no output)"
+          echo "Cargo exit code: $EXIT_CODE"
+          echo "=== LAST 20 LINES OF CARGO OUTPUT ==="
+          tail -20 cargo-output.txt 2>/dev/null || echo "(no cargo output)"
+          LAST_LINE=$(tail -1 cargo-output.txt 2>/dev/null)
+          echo "Last line: $LAST_LINE"
           if [ $EXIT_CODE -ne 0 ]; then
-            echo "::error title=bare cargo build failed (exit $EXIT_CODE)::$(tail -3 cargo-output.txt 2>/dev/null | head -1)"
+            echo "::error title=build failed::$(tail -5 cargo-output.txt 2>/dev/null | tr -s '\n' ' ')"
             exit $EXIT_CODE
           fi
 
