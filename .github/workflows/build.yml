@@ -15,12 +15,15 @@ jobs:
           - os: ubuntu-22.04
             target: x86_64-unknown-linux-gnu
             artifact: TimeSync-x86_64.AppImage
+            bundle: appimage
           - os: macos-latest
             target: x86_64-apple-darwin
             artifact: TimeSync.dmg
+            bundle: dmg
           - os: windows-latest
             target: x86_64-pc-windows-msvc
             artifact: TimeSync-x86_64.msi
+            bundle: msi
 
     runs-on: ${{ matrix.os }}
 
@@ -73,28 +76,14 @@ jobs:
           echo "=== checking dist/ ==="
           ls -la dist/ 2>&1
           echo "=== running tauri build ==="
-          npx tauri build --verbose 2>&1
+          npx tauri build --verbose --bundles ${{ matrix.bundle }} 2>&1
         env:
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
 
-      - name: Upload artifact (Linux)
-        if: runner.os == 'Linux'
+      - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: TimeSync-Linux
-          path: src-tauri/target/release/bundle/appimage/*.AppImage
-
-      - name: Upload artifact (macOS)
-        if: runner.os == 'macOS'
-        uses: actions/upload-artifact@v4
-        with:
-          name: TimeSync-macOS
-          path: src-tauri/target/release/bundle/dmg/*.dmg
-
-      - name: Upload artifact (Windows)
-        if: runner.os == 'Windows'
-        uses: actions/upload-artifact@v4
-        with:
-          name: TimeSync-Windows
-          path: src-tauri/target/release/bundle/msi/*.msi
+          if-no-files-found: error
+          name: TimeSync-${{ matrix.os }}
+          path: src-tauri/target/release/bundle/${{ matrix.bundle }}/*
