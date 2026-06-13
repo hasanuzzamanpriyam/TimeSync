@@ -29,4 +29,18 @@ export const authApi = {
     const { data } = await api.get<User>("/auth/me");
     return data;
   },
+
+  register: async (
+    username: string,
+    email: string,
+    password: string,
+    fullName: string,
+  ): Promise<void> => {
+    await api.post("/auth/register", {
+      username,
+      email,
+      password,
+      full_name: fullName,
+    });
+  },
 };
