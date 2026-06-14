@@ -79,20 +79,6 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
       await secureStorage.setTokens(result.session_token, result.session_token);
 
-      const db = await initDatabase();
-      await db.execute(
-        `INSERT OR REPLACE INTO users (id, username, email, role, full_name, is_active, updated_at)
-         VALUES ($1, $2, $3, $4, $5, $6, datetime('now'))`,
-        [
-          result.user.id,
-          result.user.username,
-          result.user.email,
-          result.user.role,
-          result.user.full_name,
-          result.user.is_active ? 1 : 0,
-        ],
-      );
-
       set({
         user: result.user,
         isAuthenticated: true,
@@ -151,6 +137,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     set({ isLoading: true });
     try {
       const db = await initDatabase();
+
+      // Remove corrupted rows first, then seed fresh ones
+      await db.execute("DELETE FROM users WHERE username IN ('admin', 'user') AND (password_hash IS NULL OR password_hash = '')");
       await invoke("seed_demo_users");
 
       const accessToken = await secureStorage.getAccessToken();
@@ -245,20 +234,6 @@ async function loginViaLocal(
   }
 
   await secureStorage.setTokens(result.session_token, result.session_token);
-
-  const db = await initDatabase();
-  await db.execute(
-    `INSERT OR REPLACE INTO users (id, username, email, role, full_name, is_active, updated_at)
-     VALUES ($1, $2, $3, $4, $5, $6, datetime('now'))`,
-    [
-      result.user.id,
-      result.user.username,
-      result.user.email,
-      result.user.role,
-      result.user.full_name,
-      result.user.is_active ? 1 : 0,
-    ],
-  );
 
   set({
     user: result.user,

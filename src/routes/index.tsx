@@ -7,20 +7,13 @@ import { TaskList } from "@/features/tasks/components/TaskList";
 import { DashboardPage } from "@/features/dashboard/components/DashboardPage";
 import { ReportsPage } from "@/features/reports/components/ReportsPage";
 import { AdminPage } from "@/features/admin/components/AdminPage";
+import { TimerPage } from "@/features/timer/components/TimerPage";
+import { ActivityPage } from "@/features/activity/components/ActivityPage";
 
 function TasksPage() {
   return (
     <div className="space-y-4">
       <TaskList />
-    </div>
-  );
-}
-
-function TimerPage() {
-  return (
-    <div className="space-y-4">
-      <h1 className="text-3xl font-bold">Timer</h1>
-      <p className="text-muted-foreground">Time tracking UI coming soon.</p>
     </div>
   );
 }
@@ -60,6 +53,10 @@ export const router = createBrowserRouter([
           {
             path: "reports",
             element: <ReportsPage />,
+          },
+          {
+            path: "activity",
+            element: <ActivityPage />,
           },
         ],
       },

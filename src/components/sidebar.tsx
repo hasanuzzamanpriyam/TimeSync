@@ -10,6 +10,7 @@ import {
   Settings,
   ChevronLeft,
   Clock,
+  Monitor,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -17,6 +18,7 @@ const navItems = [
   { to: "/dashboard", label: "Dashboard", icon: LayoutDashboard, roles: ["employee", "manager", "admin"] as const },
   { to: "/tasks", label: "Tasks", icon: ListChecks, roles: ["employee", "manager", "admin"] as const },
   { to: "/timer", label: "Timer", icon: Timer, roles: ["employee", "manager", "admin"] as const },
+  { to: "/activity", label: "Activity", icon: Monitor, roles: ["employee", "manager", "admin"] as const },
   { to: "/reports", label: "Reports", icon: BarChart3, roles: ["employee", "manager", "admin"] as const },
   { to: "/settings", label: "Settings", icon: Settings, roles: ["admin"] as const },
 ];

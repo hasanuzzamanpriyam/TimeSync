@@ -8,7 +8,7 @@ interface TimerState {
   showIdlePopup: boolean;
   isPaused: boolean;
 
-  startTimer: (taskId: number, type?: TimeEntryType) => Promise<void>;
+  startTimer: (taskId: number, type?: TimeEntryType) => Promise<TimerInstance>;
   pauseTimer: (taskId: number) => Promise<void>;
   resumeTimer: (taskId: number) => Promise<void>;
   stopTimer: (taskId: number) => Promise<void>;
@@ -63,6 +63,7 @@ export const useTimerStore = create<TimerState>((set) => ({
     set((state) => ({
       timers: [...state.timers.filter((t) => t.taskId !== taskId), timer],
     }));
+    return timer;
   },
 
   pauseTimer: async (taskId) => {

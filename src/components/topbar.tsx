@@ -19,11 +19,16 @@ import {
   User,
   Bell,
   Clock,
+  Eye,
+  EyeOff,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useActivityStore } from "@/features/activity/store";
+import { invoke } from "@tauri-apps/api/core";
 
 export function TopBar() {
   const { user, logout, authMode, loginTimestamp } = useAuthStore();
+  const { isTrackingPaused, setPaused } = useActivityStore();
   const { theme, setTheme } = useTheme();
   const navigate = useNavigate();
   const [elapsed, setElapsed] = useState("");
@@ -84,6 +89,19 @@ export function TopBar() {
       <div className="flex items-center gap-2">
         <Button variant="ghost" size="icon" aria-label="Notifications">
           <Bell className="h-5 w-5" />
+        </Button>
+
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={async () => {
+            const next = !isTrackingPaused;
+            await invoke("set_idle_state", { idle: next });
+            setPaused(next);
+          }}
+          aria-label={isTrackingPaused ? "Resume app tracking" : "Pause app tracking"}
+        >
+          {isTrackingPaused ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
         </Button>
 
         <Button

@@ -3,6 +3,9 @@ use serde::Serialize;
 use tauri::Manager;
 use tauri_plugin_sql::{Migration, MigrationKind};
 
+mod app_tracker;
+use app_tracker::AppTrackerState;
+
 #[derive(Serialize)]
 struct UserJson {
     id: i64,
@@ -55,7 +58,7 @@ fn register_local_user(
     let tx = conn.transaction().map_err(|e| format!("Tx error: {}", e))?;
 
     tx.execute(
-        "INSERT INTO users (username, email, role, full_name, is_active, password_hash) VALUES (?1, ?2, 'user', ?3, 1, ?4)",
+        "INSERT INTO users (username, email, role, full_name, is_active, password_hash) VALUES (?1, ?2, 'employee', ?3, 1, ?4)",
         rusqlite::params![username, email, full_name, password_hash],
     )
     .map_err(|e| format!("Failed to create user: {}", e))?;
@@ -154,7 +157,7 @@ fn login_local_user(
 #[tauri::command]
 fn seed_demo_users(app_handle: tauri::AppHandle) -> Result<(), String> {
     let db_path = get_db_path(&app_handle)?;
-    let mut conn = Connection::open(&db_path).map_err(|e| format!("DB open error: {}", e))?;
+    let conn = Connection::open(&db_path).map_err(|e| format!("DB open error: {}", e))?;
 
     // Migration 4 (ALTER TABLE ADD COLUMN password_hash) may not have run yet when
     // this setup hook fires, because tauri-plugin-sql runs migrations on first
@@ -174,10 +177,19 @@ fn seed_demo_users(app_handle: tauri::AppHandle) -> Result<(), String> {
     .map_err(|e| format!("Failed to seed admin: {}", e))?;
 
     conn.execute(
-        "INSERT OR IGNORE INTO users (username, email, role, full_name, is_active, password_hash) VALUES ('user', 'user@timesync.local', 'user', 'Demo User', 1, ?1)",
+        "INSERT OR IGNORE INTO users (username, email, role, full_name, is_active, password_hash) VALUES ('user', 'user@timesync.local', 'employee', 'Demo User', 1, ?1)",
         rusqlite::params![user_hash],
     )
     .map_err(|e| format!("Failed to seed user: {}", e))?;
+
+    // Recover demo users whose password_hash was NULLed or emptied by the old login bug
+    for (username, hash) in [("admin", &admin_hash), ("user", &user_hash)] {
+        conn.execute(
+            "UPDATE users SET password_hash = ?1 WHERE username = ?2 AND (password_hash IS NULL OR password_hash = '')",
+            rusqlite::params![hash, username],
+        )
+        .map_err(|e| format!("Failed to fix {} hash: {}", username, e))?;
+    }
 
     Ok(())
 }
@@ -209,6 +221,12 @@ pub fn run() {
             sql: include_str!("../db/migrations/004_add_password_hash.sql"),
             kind: MigrationKind::Up,
         },
+        Migration {
+            version: 5,
+            description: "create app_usage table",
+            sql: include_str!("../db/migrations/005_app_usage.sql"),
+            kind: MigrationKind::Up,
+        },
     ];
 
     tauri::Builder::default()
@@ -218,12 +236,21 @@ pub fn run() {
                 .build(),
         )
         .plugin(tauri_plugin_store::Builder::default().build())
+        .setup(|app| {
+            app.manage(AppTrackerState::new());
+            Ok(())
+        })
         .invoke_handler(tauri::generate_handler![
             hash_password,
             verify_password,
             register_local_user,
             login_local_user,
             seed_demo_users,
+            app_tracker::start_app_tracking,
+            app_tracker::stop_app_tracking,
+            app_tracker::set_idle_state,
+            app_tracker::get_app_usage,
+            app_tracker::get_today_app_usage,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

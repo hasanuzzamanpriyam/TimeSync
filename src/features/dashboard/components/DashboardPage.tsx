@@ -1,6 +1,7 @@
 import { useTodayHours, useWeeklyHours, useActiveTask, useCompletedTasks, useProductivity, useAttendanceStatus } from "@/features/dashboard/hooks";
 import { StatCard } from "@/features/dashboard/components/StatCard";
 import { ActiveTaskCard } from "@/features/dashboard/components/ActiveTaskCard";
+import { AppUsageCard } from "@/features/activity/components/AppUsageCard";
 import { Clock, CalendarDays, CheckCircle2, TrendingUp, UserCheck } from "lucide-react";
 
 export function DashboardPage() {
@@ -22,6 +23,7 @@ export function DashboardPage() {
         <StatCard title="Productivity" value={`${productivity.percentage}%`} icon={<TrendingUp className="h-5 w-5" />} isLoading={productivity.isLoading} error={productivity.error} />
         <StatCard title="Attendance" value={attendance.status === "unavailable" ? "N/A" : attendance.status.replace("_", " ")} icon={<UserCheck className="h-5 w-5" />} isLoading={attendance.isLoading} error={attendance.error} />
       </div>
+      <AppUsageCard />
     </div>
   );
 }
