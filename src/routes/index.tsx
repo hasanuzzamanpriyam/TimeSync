@@ -9,6 +9,7 @@ import { ReportsPage } from "@/features/reports/components/ReportsPage";
 import { AdminPage } from "@/features/admin/components/AdminPage";
 import { TimerPage } from "@/features/timer/components/TimerPage";
 import { ActivityPage } from "@/features/activity/components/ActivityPage";
+import { TeamPage } from "@/features/teams/components/TeamPage";
 
 function TasksPage() {
   return (
@@ -57,6 +58,10 @@ export const router = createBrowserRouter([
           {
             path: "activity",
             element: <ActivityPage />,
+          },
+          {
+            path: "team",
+            element: <TeamPage />,
           },
         ],
       },

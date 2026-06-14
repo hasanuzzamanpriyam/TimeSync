@@ -89,3 +89,20 @@ export interface ActivityLog {
   idle_seconds: number;
   recorded_at: string;
 }
+
+export interface Team {
+  id: number;
+  name: string;
+  description?: string;
+  created_by: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface TeamMember {
+  id: number;
+  team_id: number;
+  user_id: number;
+  is_manager: boolean;
+  created_at: string;
+}

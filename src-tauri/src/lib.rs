@@ -194,6 +194,197 @@ fn seed_demo_users(app_handle: tauri::AppHandle) -> Result<(), String> {
     Ok(())
 }
 
+#[derive(Serialize)]
+struct TeamJson {
+    id: i64,
+    name: String,
+    description: Option<String>,
+    created_by: i64,
+    created_at: String,
+    updated_at: String,
+}
+
+#[derive(Serialize)]
+struct TeamMemberJson {
+    id: i64,
+    team_id: i64,
+    user_id: i64,
+    is_manager: bool,
+    created_at: String,
+}
+
+fn conn_from_app(app_handle: &tauri::AppHandle) -> Result<rusqlite::Connection, String> {
+    let db_path = get_db_path(app_handle)?;
+    Connection::open(&db_path).map_err(|e| format!("DB open error: {}", e))
+}
+
+#[tauri::command]
+fn create_team(app_handle: tauri::AppHandle, name: String, description: Option<String>, created_by: i64) -> Result<TeamJson, String> {
+    let conn = conn_from_app(&app_handle)?;
+    conn.execute(
+        "INSERT INTO teams (name, description, created_by) VALUES (?1, ?2, ?3)",
+        rusqlite::params![name, description, created_by],
+    ).map_err(|e| format!("Failed to create team: {}", e))?;
+    let id = conn.last_insert_rowid();
+    let team = conn.query_row(
+        "SELECT id, name, description, created_by, created_at, updated_at FROM teams WHERE id = ?1",
+        rusqlite::params![id],
+        |row| Ok(TeamJson {
+            id: row.get(0)?,
+            name: row.get(1)?,
+            description: row.get(2)?,
+            created_by: row.get(3)?,
+            created_at: row.get(4)?,
+            updated_at: row.get(5)?,
+        }),
+    ).map_err(|e| format!("Team not found: {}", e))?;
+    Ok(team)
+}
+
+#[tauri::command]
+fn update_team(app_handle: tauri::AppHandle, id: i64, name: String, description: Option<String>) -> Result<TeamJson, String> {
+    let conn = conn_from_app(&app_handle)?;
+    conn.execute(
+        "UPDATE teams SET name = ?1, description = ?2, updated_at = datetime('now') WHERE id = ?3",
+        rusqlite::params![name, description, id],
+    ).map_err(|e| format!("Failed to update team: {}", e))?;
+    let team = conn.query_row(
+        "SELECT id, name, description, created_by, created_at, updated_at FROM teams WHERE id = ?1",
+        rusqlite::params![id],
+        |row| Ok(TeamJson {
+            id: row.get(0)?,
+            name: row.get(1)?,
+            description: row.get(2)?,
+            created_by: row.get(3)?,
+            created_at: row.get(4)?,
+            updated_at: row.get(5)?,
+        }),
+    ).map_err(|e| format!("Team not found: {}", e))?;
+    Ok(team)
+}
+
+#[tauri::command]
+fn delete_team(app_handle: tauri::AppHandle, id: i64) -> Result<(), String> {
+    let conn = conn_from_app(&app_handle)?;
+    conn.execute("DELETE FROM teams WHERE id = ?1", rusqlite::params![id])
+        .map_err(|e| format!("Failed to delete team: {}", e))?;
+    Ok(())
+}
+
+#[tauri::command]
+fn get_teams(app_handle: tauri::AppHandle) -> Result<Vec<TeamJson>, String> {
+    let conn = conn_from_app(&app_handle)?;
+    let mut stmt = conn.prepare("SELECT id, name, description, created_by, created_at, updated_at FROM teams ORDER BY name")
+        .map_err(|e| format!("Query error: {}", e))?;
+    let rows = stmt.query_map([], |row| {
+        Ok(TeamJson {
+            id: row.get(0)?,
+            name: row.get(1)?,
+            description: row.get(2)?,
+            created_by: row.get(3)?,
+            created_at: row.get(4)?,
+            updated_at: row.get(5)?,
+        })
+    }).map_err(|e| format!("Query error: {}", e))?;
+    let mut teams = Vec::new();
+    for row in rows {
+        teams.push(row.map_err(|e| format!("Row error: {}", e))?);
+    }
+    Ok(teams)
+}
+
+#[tauri::command]
+fn get_team(app_handle: tauri::AppHandle, id: i64) -> Result<TeamJson, String> {
+    let conn = conn_from_app(&app_handle)?;
+    conn.query_row(
+        "SELECT id, name, description, created_by, created_at, updated_at FROM teams WHERE id = ?1",
+        rusqlite::params![id],
+        |row| Ok(TeamJson {
+            id: row.get(0)?,
+            name: row.get(1)?,
+            description: row.get(2)?,
+            created_by: row.get(3)?,
+            created_at: row.get(4)?,
+            updated_at: row.get(5)?,
+        }),
+    ).map_err(|e| format!("Team not found: {}", e))
+}
+
+#[tauri::command]
+fn get_team_members(app_handle: tauri::AppHandle, team_id: i64) -> Result<Vec<TeamMemberJson>, String> {
+    let conn = conn_from_app(&app_handle)?;
+    let mut stmt = conn.prepare(
+        "SELECT tm.id, tm.team_id, tm.user_id, tm.is_manager, tm.created_at FROM team_members tm INNER JOIN users u ON u.id = tm.user_id WHERE tm.team_id = ?1 ORDER BY u.full_name"
+    ).map_err(|e| format!("Query error: {}", e))?;
+    let rows = stmt.query_map(rusqlite::params![team_id], |row| {
+        Ok(TeamMemberJson {
+            id: row.get(0)?,
+            team_id: row.get(1)?,
+            user_id: row.get(2)?,
+            is_manager: row.get::<_, i64>(3)? != 0,
+            created_at: row.get(4)?,
+        })
+    }).map_err(|e| format!("Query error: {}", e))?;
+    let mut members = Vec::new();
+    for row in rows {
+        members.push(row.map_err(|e| format!("Row error: {}", e))?);
+    }
+    Ok(members)
+}
+
+#[tauri::command]
+fn add_team_member(app_handle: tauri::AppHandle, team_id: i64, user_id: i64, is_manager: bool) -> Result<(), String> {
+    let conn = conn_from_app(&app_handle)?;
+    conn.execute(
+        "INSERT OR IGNORE INTO team_members (team_id, user_id, is_manager) VALUES (?1, ?2, ?3)",
+        rusqlite::params![team_id, user_id, is_manager as i64],
+    ).map_err(|e| format!("Failed to add member: {}", e))?;
+    Ok(())
+}
+
+#[tauri::command]
+fn remove_team_member(app_handle: tauri::AppHandle, team_id: i64, user_id: i64) -> Result<(), String> {
+    let conn = conn_from_app(&app_handle)?;
+    conn.execute(
+        "DELETE FROM team_members WHERE team_id = ?1 AND user_id = ?2",
+        rusqlite::params![team_id, user_id],
+    ).map_err(|e| format!("Failed to remove member: {}", e))?;
+    Ok(())
+}
+
+#[tauri::command]
+fn set_team_manager(app_handle: tauri::AppHandle, team_id: i64, user_id: i64, is_manager: bool) -> Result<(), String> {
+    let conn = conn_from_app(&app_handle)?;
+    conn.execute(
+        "UPDATE team_members SET is_manager = ?1 WHERE team_id = ?2 AND user_id = ?3",
+        rusqlite::params![is_manager as i64, team_id, user_id],
+    ).map_err(|e| format!("Failed to set manager: {}", e))?;
+    Ok(())
+}
+
+#[tauri::command]
+fn get_managed_teams(app_handle: tauri::AppHandle, user_id: i64) -> Result<Vec<TeamJson>, String> {
+    let conn = conn_from_app(&app_handle)?;
+    let mut stmt = conn.prepare(
+        "SELECT t.id, t.name, t.description, t.created_by, t.created_at, t.updated_at FROM teams t INNER JOIN team_members tm ON tm.team_id = t.id WHERE tm.user_id = ?1 AND tm.is_manager = 1 ORDER BY t.name"
+    ).map_err(|e| format!("Query error: {}", e))?;
+    let rows = stmt.query_map(rusqlite::params![user_id], |row| {
+        Ok(TeamJson {
+            id: row.get(0)?,
+            name: row.get(1)?,
+            description: row.get(2)?,
+            created_by: row.get(3)?,
+            created_at: row.get(4)?,
+            updated_at: row.get(5)?,
+        })
+    }).map_err(|e| format!("Query error: {}", e))?;
+    let mut teams = Vec::new();
+    for row in rows {
+        teams.push(row.map_err(|e| format!("Row error: {}", e))?);
+    }
+    Ok(teams)
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     let migrations = vec![
@@ -227,6 +418,12 @@ pub fn run() {
             sql: include_str!("../db/migrations/005_app_usage.sql"),
             kind: MigrationKind::Up,
         },
+        Migration {
+            version: 6,
+            description: "create teams and team_members tables",
+            sql: include_str!("../db/migrations/006_teams.sql"),
+            kind: MigrationKind::Up,
+        },
     ];
 
     tauri::Builder::default()
@@ -246,6 +443,16 @@ pub fn run() {
             register_local_user,
             login_local_user,
             seed_demo_users,
+            create_team,
+            update_team,
+            delete_team,
+            get_teams,
+            get_team,
+            get_team_members,
+            add_team_member,
+            remove_team_member,
+            set_team_manager,
+            get_managed_teams,
             app_tracker::start_app_tracking,
             app_tracker::stop_app_tracking,
             app_tracker::set_idle_state,
