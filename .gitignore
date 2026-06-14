@@ -6,3 +6,6 @@ src-tauri/target/
 .superpowers/
 .playwright-mcp/
 actions-status.md
+
+# Cargo local config (machine-specific)
+.cargo/config.toml
