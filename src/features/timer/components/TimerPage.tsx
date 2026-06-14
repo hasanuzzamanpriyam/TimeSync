@@ -3,7 +3,7 @@ import { invoke } from "@tauri-apps/api/core";
 import { getDatabase } from "@/lib/db";
 import { useAuthStore } from "@/features/auth/store";
 import { useTimerStore } from "@/features/timer/store";
-import { TimerInstance } from "@/features/timer/engine";
+import { timerEngine, TimerInstance } from "@/features/timer/engine";
 import { Button } from "@/components/ui/button";
 import {
   Select,
@@ -52,6 +52,7 @@ export function TimerPage() {
   const [isTracking, setIsTracking] = useState(false);
   const [activeTimeEntryId, setActiveTimeEntryId] = useState<number | null>(null);
   const [trackingError, setTrackingError] = useState<string | null>(null);
+  const [trackingStatus, setTrackingStatus] = useState<any>(null);
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -68,6 +69,23 @@ export function TimerPage() {
     fetchTasks();
   }, []);
 
+  // Recover running timer on mount
+  useEffect(() => {
+    const running = timerEngine.getAllTimers().filter(t => t.status === "running");
+    if (running.length > 0) {
+      const t = running[0];
+      setActiveTimer(t);
+      setDisplaySeconds(t.totalSeconds);
+      setActiveTimeEntryId(t.timeEntryId);
+      invoke("start_app_tracking", { timeEntryId: t.timeEntryId })
+        .then(() => setIsTracking(true))
+        .catch((err: any) => {
+          setTrackingError(`App tracking recovery failed: ${err?.message || err}`);
+          setIsTracking(false);
+        });
+    }
+  }, []);
+
   // Poll for active window info when tracking is active
   useEffect(() => {
     if (!isTracking || !activeTimeEntryId) return;
@@ -81,6 +99,18 @@ export function TimerPage() {
         console.error("Failed to fetch app usage:", err);
       }
     }, 5000);
+    return () => clearInterval(interval);
+  }, [isTracking, activeTimeEntryId]);
+
+  // Poll for live tracking diagnostics
+  useEffect(() => {
+    if (!isTracking || !activeTimeEntryId) return;
+    const interval = setInterval(async () => {
+      try {
+        const status = await invoke<any>("check_app_tracking", { timeEntryId: activeTimeEntryId });
+        setTrackingStatus(status);
+      } catch { /* ignore */ }
+    }, 3000);
     return () => clearInterval(interval);
   }, [isTracking, activeTimeEntryId]);
 
@@ -147,6 +177,7 @@ export function TimerPage() {
       setActiveTimer(null);
       setDisplaySeconds(0);
       setActiveTimeEntryId(null);
+      setTrackingStatus(null);
     } catch (err) {
       console.error("Failed to stop timer:", err);
     }
@@ -247,24 +278,28 @@ export function TimerPage() {
             </Card>
           )}
 
-          {activeTimer && (
+          {activeTimer && isTracking && trackingStatus && (
             <Card>
-              <CardContent className="p-3">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="w-full text-xs"
-                  onClick={async () => {
-                    try {
-                      const status = await invoke<any>("check_app_tracking", { timeEntryId: activeTimeEntryId });
-                      alert(JSON.stringify(status, null, 2));
-                    } catch (e: any) {
-                      alert(`Debug error: ${e?.message || e}`);
-                    }
-                  }}
-                >
-                  Debug: Check Tracking Status
-                </Button>
+              <CardHeader className="py-3">
+                <CardTitle className="flex items-center gap-2 text-sm">
+                  <Monitor className="h-4 w-4" />
+                  Tracking Status
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="py-2 px-3 text-xs space-y-1">
+                <div className="flex items-center gap-2">
+                  <div className={cn("w-2 h-2 rounded-full", (trackingStatus.insert_count ?? 0) > 0 ? "bg-green-500" : "bg-yellow-500")}></div>
+                  <span className="font-medium">{trackingStatus.last_app || "waiting..."}</span>
+                </div>
+                <div className="text-muted-foreground">
+                  Polls: {trackingStatus.poll_count ?? 0} &middot; Inserts: {trackingStatus.insert_count ?? 0}
+                  {trackingStatus.app_usage_rows > 0 && (
+                    <span className="ml-2">&middot; DB rows: {trackingStatus.app_usage_rows}</span>
+                  )}
+                </div>
+                {trackingStatus.last_error && trackingStatus.last_error.length > 0 && (
+                  <p className="text-red-500 break-words">{trackingStatus.last_error}</p>
+                )}
               </CardContent>
             </Card>
           )}

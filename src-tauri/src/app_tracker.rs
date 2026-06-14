@@ -6,11 +6,16 @@ use std::sync::{Arc, Mutex};
 use std::thread;
 use std::time::Duration;
 use tauri::Manager;
+use std::panic;
 
 pub struct AppTrackerState {
     pub is_tracking: Arc<AtomicBool>,
     pub is_idle: Arc<AtomicBool>,
     pub time_entry_id: Arc<Mutex<Option<i64>>>,
+    pub last_app: Arc<Mutex<String>>,
+    pub last_error: Arc<Mutex<String>>,
+    pub poll_count: Arc<Mutex<i64>>,
+    pub insert_count: Arc<Mutex<i64>>,
 }
 
 impl AppTrackerState {
@@ -19,6 +24,10 @@ impl AppTrackerState {
             is_tracking: Arc::new(AtomicBool::new(false)),
             is_idle: Arc::new(AtomicBool::new(false)),
             time_entry_id: Arc::new(Mutex::new(None)),
+            last_app: Arc::new(Mutex::new(String::new())),
+            last_error: Arc::new(Mutex::new(String::new())),
+            poll_count: Arc::new(Mutex::new(0)),
+            insert_count: Arc::new(Mutex::new(0)),
         }
     }
 }
@@ -34,27 +43,65 @@ pub struct AppUsageRecord {
 mod platform {
     use std::ffi::OsString;
     use std::os::windows::ffi::OsStringExt;
+    use std::path::Path;
 
     #[link(name = "user32")]
     extern "system" {
         fn GetForegroundWindow() -> isize;
         fn GetWindowTextW(hwnd: isize, lpString: *mut u16, nMaxCount: i32) -> i32;
         fn GetWindowThreadProcessId(hwnd: isize, lpdwProcessId: *mut u32) -> u32;
+        fn GetWindowModuleFileNameW(hwnd: isize, lpFilename: *mut u16, nSize: u32) -> u32;
     }
 
     #[link(name = "kernel32")]
     extern "system" {
         fn OpenProcess(dwDesiredAccess: u32, bInheritHandle: i32, dwProcessId: u32) -> isize;
         fn CloseHandle(hObject: isize) -> i32;
+        fn QueryFullProcessImageNameW(hProcess: isize, dwFlags: u32, lpExeName: *mut u16, lpdwSize: *mut u32) -> i32;
     }
 
-    #[link(name = "psapi")]
-    extern "system" {
-        fn GetModuleBaseNameW(hProcess: isize, hModule: isize, lpBaseName: *mut u16, nSize: u32) -> u32;
+    const PROCESS_QUERY_LIMITED_INFORMATION: u32 = 0x1000;
+
+    fn exe_stem_from_path(raw: &[u16]) -> Option<String> {
+        // Trim trailing nulls
+        let len = raw.iter().rposition(|&c| c != 0).map(|i| i + 1).unwrap_or(0);
+        if len == 0 {
+            return None;
+        }
+        let os_str = OsString::from_wide(&raw[..len]);
+        Path::new(&os_str)
+            .file_stem()
+            .and_then(|s| s.to_str())
+            .map(|s| s.to_string())
     }
 
-    const PROCESS_QUERY_INFORMATION: u32 = 0x0400;
-    const PROCESS_VM_READ: u32 = 0x0010;
+    unsafe fn get_app_name(hwnd: isize, pid: u32) -> String {
+        // Method 1: OpenProcess with LIMITED_INFO + QueryFullProcessImageNameW
+        let handle = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, 0, pid);
+        if handle != 0 {
+            let mut name_buf = [0u16; 260];
+            let mut name_size: u32 = 260;
+            let success = QueryFullProcessImageNameW(handle, 0, name_buf.as_mut_ptr(), &mut name_size);
+            CloseHandle(handle);
+            if success != 0 && name_size > 1 {
+                if let Some(name) = exe_stem_from_path(&name_buf[..name_size as usize]) {
+                    return name;
+                }
+            }
+        }
+
+        // Method 2: GetWindowModuleFileNameW (no process handle needed)
+        let mut name_buf = [0u16; 260];
+        let name_len = GetWindowModuleFileNameW(hwnd, name_buf.as_mut_ptr(), 260);
+        if name_len > 0 {
+            if let Some(name) = exe_stem_from_path(&name_buf[..name_len as usize]) {
+                return name;
+            }
+        }
+
+        // Method 3: fallback
+        format!("pid:{}", pid)
+    }
 
     pub fn get_active_window() -> Result<(String, String), String> {
         unsafe {
@@ -76,22 +123,7 @@ mod platform {
             let mut pid: u32 = 0;
             GetWindowThreadProcessId(hwnd, &mut pid);
 
-            let handle = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, 0, pid);
-            let app_name = if handle != 0 {
-                let mut name_buf = [0u16; 260];
-                let name_len = GetModuleBaseNameW(handle, 0, name_buf.as_mut_ptr(), 260);
-                CloseHandle(handle);
-                if name_len > 0 {
-                    OsString::from_wide(&name_buf[..name_len as usize])
-                        .to_string_lossy()
-                        .into_owned()
-                } else {
-                    format!("pid:{}", pid)
-                }
-            } else {
-                format!("pid:{}", pid)
-            };
-
+            let app_name = get_app_name(hwnd, pid);
             Ok((app_name, title))
         }
     }
@@ -199,23 +231,64 @@ pub fn start_app_tracking(
     let tracking_flag = state.is_tracking.clone();
     let idle_flag = state.is_idle.clone();
     let entry_id = state.time_entry_id.clone();
+    let last_app = state.last_app.clone();
+    let last_error = state.last_error.clone();
+    let poll_count = state.poll_count.clone();
+    let insert_count = state.insert_count.clone();
 
     thread::spawn(move || {
-        while tracking_flag.load(Ordering::SeqCst) {
-            if !idle_flag.load(Ordering::SeqCst) {
-                if let Ok((app_name, window_title)) = platform::get_active_window() {
-                    let tid = *entry_id.lock().unwrap();
-                    if let Some(tid) = tid {
-                        if let Ok(conn) = rusqlite::Connection::open(&db_path) {
-                            let _ = conn.execute(
-                                "INSERT INTO app_usage (time_entry_id, app_name, window_title, duration_seconds) VALUES (?1, ?2, ?3, 10)",
-                                rusqlite::params![tid, app_name, window_title],
-                            );
+        let _result = panic::catch_unwind(panic::AssertUnwindSafe(|| {
+            while tracking_flag.load(Ordering::SeqCst) {
+                if !idle_flag.load(Ordering::SeqCst) {
+                    if let Ok((app_name, window_title)) = platform::get_active_window() {
+                        if let Ok(mut cnt) = poll_count.lock() {
+                            *cnt += 1;
+                        }
+                        if let Ok(mut app) = last_app.lock() {
+                            *app = app_name.clone();
+                        }
+                        let tid = match entry_id.lock() {
+                            Ok(guard) => *guard,
+                            Err(_) => {
+                                if let Ok(mut err) = last_error.lock() {
+                                    *err = "mutex poisoned".to_string();
+                                }
+                                None
+                            }
+                        };
+                        if let Some(tid) = tid {
+                            match rusqlite::Connection::open(&db_path) {
+                                Ok(conn) => {
+                                    if let Err(e) = conn.execute(
+                                        "INSERT INTO app_usage (time_entry_id, app_name, window_title, duration_seconds) VALUES (?1, ?2, ?3, 10)",
+                                        rusqlite::params![tid, app_name, window_title],
+                                    ) {
+                                        if let Ok(mut err) = last_error.lock() {
+                                            *err = format!("insert: {}", e);
+                                        }
+                                    } else {
+                                        if let Ok(mut cnt) = insert_count.lock() {
+                                            *cnt += 1;
+                                        }
+                                    }
+                                }
+                                Err(e) => {
+                                    if let Ok(mut err) = last_error.lock() {
+                                        *err = format!("db open: {}", e);
+                                    }
+                                }
+                            }
                         }
                     }
                 }
+                thread::sleep(Duration::from_secs(10));
             }
-            thread::sleep(Duration::from_secs(10));
+        }));
+        if _result.is_err() {
+            if let Ok(mut err) = last_error.lock() {
+                *err = "tracking thread panicked".to_string();
+            }
+            tracking_flag.store(false, Ordering::SeqCst);
         }
     });
 
@@ -240,6 +313,10 @@ pub struct AppTrackingStatus {
     pub is_idle: bool,
     pub current_time_entry_id: Option<i64>,
     pub app_usage_rows: i64,
+    pub last_app: String,
+    pub last_error: String,
+    pub poll_count: i64,
+    pub insert_count: i64,
 }
 
 #[tauri::command]
@@ -254,6 +331,10 @@ pub fn check_app_tracking(
         .time_entry_id
         .lock()
         .map_err(|e| e.to_string())?;
+    let last_app = state.last_app.lock().map_err(|e| e.to_string())?.clone();
+    let last_error = state.last_error.lock().map_err(|e| e.to_string())?.clone();
+    let poll_count = *state.poll_count.lock().map_err(|e| e.to_string())?;
+    let insert_count = *state.insert_count.lock().map_err(|e| e.to_string())?;
 
     let db_path = get_db_path(&app_handle)?;
     let app_usage_rows = if let Ok(conn) = rusqlite::Connection::open(&db_path) {
@@ -272,6 +353,10 @@ pub fn check_app_tracking(
         is_idle,
         current_time_entry_id,
         app_usage_rows,
+        last_app,
+        last_error,
+        poll_count,
+        insert_count,
     })
 }
 

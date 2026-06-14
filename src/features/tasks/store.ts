@@ -33,7 +33,7 @@ export const useTaskStore = create<TaskState>((set, get) => ({
     try {
       const db = await getDatabase();
       const rows = await db.select<Record<string, any>[]>(
-        "SELECT * FROM tasks ORDER BY created_at DESC",
+        "SELECT * FROM tasks WHERE status != 'cancelled' ORDER BY created_at DESC",
       );
       const tasks: Task[] = rows.map((r: Record<string, any>) => ({
         id: r.id,
