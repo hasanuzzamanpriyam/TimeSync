@@ -118,7 +118,7 @@ export const useTaskStore = create<TaskState>((set, get) => ({
 
   deleteTask: async (id) => {
     const db = await getDatabase();
-    await db.execute("DELETE FROM tasks WHERE id = $1", [id]);
+    await db.execute("UPDATE tasks SET status = 'cancelled' WHERE id = $1", [id]);
     set((state) => ({ tasks: state.tasks.filter((t) => t.id !== id) }));
   },
 

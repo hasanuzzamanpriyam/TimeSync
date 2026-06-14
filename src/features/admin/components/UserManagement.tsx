@@ -14,7 +14,7 @@ import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from "@/components/ui/select";
 import { getDatabase } from "@/lib/db";
-import { Plus, Pen, Trash2 } from "lucide-react";
+import { Plus, Pen, Trash2, RotateCcw } from "lucide-react";
 
 interface LocalUser {
   id: number;
@@ -92,9 +92,15 @@ export function UserManagement() {
     fetchUsers();
   };
 
-  const handleDelete = async (id: number) => {
+  const handleDeactivate = async (id: number) => {
     const db = await getDatabase();
     await db.execute("UPDATE users SET is_active = 0 WHERE id = $1", [id]);
+    fetchUsers();
+  };
+
+  const handleReactivate = async (id: number) => {
+    const db = await getDatabase();
+    await db.execute("UPDATE users SET is_active = 1 WHERE id = $1", [id]);
     fetchUsers();
   };
 
@@ -135,9 +141,15 @@ export function UserManagement() {
                     <Button variant="ghost" size="icon" onClick={() => openEdit(u)}>
                       <Pen className="h-4 w-4" />
                     </Button>
-                    <Button variant="ghost" size="icon" onClick={() => handleDelete(u.id)}>
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
+                    {u.is_active ? (
+                      <Button variant="ghost" size="icon" onClick={() => handleDeactivate(u.id)}>
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    ) : (
+                      <Button variant="ghost" size="icon" onClick={() => handleReactivate(u.id)}>
+                        <RotateCcw className="h-4 w-4" />
+                      </Button>
+                    )}
                   </div>
                 </TableCell>
               </TableRow>

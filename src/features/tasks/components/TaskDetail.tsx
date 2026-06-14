@@ -30,9 +30,12 @@ export function TaskDetail({ task, open, onOpenChange }: TaskDetailProps) {
   const isPaused = timerState?.status === "paused";
 
   const handleDelete = async () => {
-    if (confirm("Delete this task?")) {
+    if (!confirm("Delete this task?")) return;
+    try {
       await deleteTask(task.id);
       onOpenChange(false);
+    } catch (err: any) {
+      alert("Failed to delete task: " + (err?.message || err));
     }
   };
 
