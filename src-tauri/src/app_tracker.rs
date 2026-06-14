@@ -234,6 +234,47 @@ pub fn set_idle_state(state: tauri::State<'_, AppTrackerState>, idle: bool) -> R
     Ok(())
 }
 
+#[derive(Serialize)]
+pub struct AppTrackingStatus {
+    pub is_tracking: bool,
+    pub is_idle: bool,
+    pub current_time_entry_id: Option<i64>,
+    pub app_usage_rows: i64,
+}
+
+#[tauri::command]
+pub fn check_app_tracking(
+    state: tauri::State<'_, AppTrackerState>,
+    app_handle: tauri::AppHandle,
+    time_entry_id: i64,
+) -> Result<AppTrackingStatus, String> {
+    let is_tracking = state.is_tracking.load(Ordering::SeqCst);
+    let is_idle = state.is_idle.load(Ordering::SeqCst);
+    let current_time_entry_id = *state
+        .time_entry_id
+        .lock()
+        .map_err(|e| e.to_string())?;
+
+    let db_path = get_db_path(&app_handle)?;
+    let app_usage_rows = if let Ok(conn) = rusqlite::Connection::open(&db_path) {
+        conn.query_row(
+            "SELECT COUNT(*) FROM app_usage WHERE time_entry_id = ?1",
+            rusqlite::params![time_entry_id],
+            |row| row.get::<_, i64>(0),
+        )
+        .unwrap_or(0)
+    } else {
+        0
+    };
+
+    Ok(AppTrackingStatus {
+        is_tracking,
+        is_idle,
+        current_time_entry_id,
+        app_usage_rows,
+    })
+}
+
 #[tauri::command]
 pub fn get_app_usage(
     app_handle: tauri::AppHandle,

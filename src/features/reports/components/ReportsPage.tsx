@@ -39,12 +39,13 @@ export function ReportsPage() {
 
   const employee = useEmployeeReport(startDate, endDate);
   const project = useProjectReport(startDate, endDate);
-  const appUsage = useAppUsageReport(
+const appUsageUserIdResolved = appUsageUserId === "__all__" ? null : appUsageUserId ? parseInt(appUsageUserId) : null;
+const appUsage = useAppUsageReport(
     startDate,
     endDate,
-    appUsageUserId ? parseInt(appUsageUserId) : (isManagerOrAdmin ? null : user?.id),
+    appUsageUserIdResolved ?? (isManagerOrAdmin ? null : user?.id),
     appFilter,
-  );
+);
 
   const currentRows = activeTab === "employee" ? employee.rows
     : activeTab === "project" ? project.rows
@@ -125,7 +126,7 @@ export function ReportsPage() {
                     <SelectValue placeholder="All Users" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">All Users</SelectItem>
+                    <SelectItem value="__all__">All Users</SelectItem>
                     {employee.rows
                       .filter((r, i, arr) => arr.findIndex((x) => x.user_id === r.user_id) === i)
                       .map((r) => (

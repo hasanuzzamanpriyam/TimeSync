@@ -458,6 +458,7 @@ pub fn run() {
             app_tracker::set_idle_state,
             app_tracker::get_app_usage,
             app_tracker::get_today_app_usage,
+            app_tracker::check_app_tracking,
             app_tracker::get_app_usage_report,
         ])
         .run(tauri::generate_context!())

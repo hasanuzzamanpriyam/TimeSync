@@ -51,6 +51,7 @@ export function TimerPage() {
   const [sessionApps, setSessionApps] = useState<AppUsageRecord[]>([]);
   const [isTracking, setIsTracking] = useState(false);
   const [activeTimeEntryId, setActiveTimeEntryId] = useState<number | null>(null);
+  const [trackingError, setTrackingError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -96,14 +97,20 @@ export function TimerPage() {
 
   const handleStart = async () => {
     if (!selectedTaskId || !user) return;
+    setTrackingError(null);
     try {
       const timer = await startTimer(selectedTaskId);
       setActiveTimer(timer);
       setDisplaySeconds(0);
       setSessionApps([]);
       setActiveTimeEntryId(timer.timeEntryId);
-      await invoke("start_app_tracking", { timeEntryId: timer.timeEntryId });
-      setIsTracking(true);
+      try {
+        await invoke("start_app_tracking", { timeEntryId: timer.timeEntryId });
+        setIsTracking(true);
+      } catch (err: any) {
+        setTrackingError(`App tracking failed: ${err?.message || err}`);
+        setIsTracking(false);
+      }
     } catch (err) {
       console.error("Failed to start timer:", err);
     }
@@ -232,6 +239,36 @@ export function TimerPage() {
             </CardContent>
           </Card>
 
+          {trackingError && (
+            <Card className="border-destructive">
+              <CardContent className="p-4">
+                <p className="text-sm text-destructive font-medium">{trackingError}</p>
+              </CardContent>
+            </Card>
+          )}
+
+          {activeTimer && (
+            <Card>
+              <CardContent className="p-3">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="w-full text-xs"
+                  onClick={async () => {
+                    try {
+                      const status = await invoke<any>("check_app_tracking", { timeEntryId: activeTimeEntryId });
+                      alert(JSON.stringify(status, null, 2));
+                    } catch (e: any) {
+                      alert(`Debug error: ${e?.message || e}`);
+                    }
+                  }}
+                >
+                  Debug: Check Tracking Status
+                </Button>
+              </CardContent>
+            </Card>
+          )}
+
           {activeTimer && (
             <Card>
               <CardHeader>
@@ -241,7 +278,9 @@ export function TimerPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                {sessionApps.length === 0 ? (
+                {!isTracking ? (
+                  <p className="text-sm text-muted-foreground">App tracker not running. {trackingError ? "See error above." : "Check console for details."}</p>
+                ) : sessionApps.length === 0 ? (
                   <p className="text-sm text-muted-foreground">No app data yet. Tracking every 10 seconds...</p>
                 ) : (
                   <div className="space-y-3">
