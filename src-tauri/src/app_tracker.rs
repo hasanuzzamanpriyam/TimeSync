@@ -175,8 +175,8 @@ mod platform {
 fn get_db_path(app_handle: &tauri::AppHandle) -> Result<std::path::PathBuf, String> {
     let app_dir = app_handle
         .path()
-        .app_data_dir()
-        .map_err(|e| format!("Failed to get app data dir: {}", e))?;
+        .app_config_dir()
+        .map_err(|e| format!("Failed to get app config dir: {}", e))?;
     Ok(app_dir.join("timesync.db"))
 }
 

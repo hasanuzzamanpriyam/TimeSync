@@ -138,8 +138,6 @@ export const useAuthStore = create<AuthState>((set, get) => ({
     try {
       const db = await initDatabase();
 
-      // Remove corrupted rows first, then seed fresh ones
-      await db.execute("DELETE FROM users WHERE username IN ('admin', 'user') AND (password_hash IS NULL OR password_hash = '')");
       await invoke("seed_demo_users");
 
       const accessToken = await secureStorage.getAccessToken();
@@ -224,6 +222,7 @@ async function loginViaLocal(
   password: string,
   set: (state: Partial<AuthState>) => void,
 ): Promise<void> {
+  await invoke("seed_demo_users");
   const result = await invoke<LoginResult | null>("login_local_user", {
     username,
     password,
