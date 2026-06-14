@@ -182,6 +182,15 @@ fn seed_demo_users(app_handle: tauri::AppHandle) -> Result<(), String> {
     )
     .map_err(|e| format!("Failed to seed user: {}", e))?;
 
+    // Reactivate demo users if they were accidentally deactivated
+    for username in ["admin", "user"] {
+        conn.execute(
+            "UPDATE users SET is_active = 1 WHERE username = ?1 AND is_active = 0",
+            rusqlite::params![username],
+        )
+        .map_err(|e| format!("Failed to reactivate {}: {}", username, e))?;
+    }
+
     // Recover demo users whose password_hash was NULLed or emptied by the old login bug
     for (username, hash) in [("admin", &admin_hash), ("user", &user_hash)] {
         conn.execute(
