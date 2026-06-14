@@ -1,4 +1,5 @@
 use rusqlite;
+use rusqlite::types::ToSql;
 use serde::Serialize;
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::{Arc, Mutex};
@@ -278,12 +279,12 @@ pub fn get_today_app_usage(
 
     let mut stmt = conn
         .prepare(
-            "SELECT a.app_name, a.window_title, SUM(a.duration_seconds) as total_seconds
-             FROM app_usage a
-             JOIN time_entries t ON t.id = a.time_entry_id
-             WHERE t.user_id = ?1 AND date(a.recorded_at) = date('now')
-             GROUP BY a.app_name, a.window_title
-             ORDER BY total_seconds DESC",
+             "SELECT a.app_name, a.window_title, SUM(a.duration_seconds) as total_seconds
+              FROM app_usage a
+              JOIN time_entries t ON t.id = a.time_entry_id
+              WHERE t.user_id = ?1 AND date(a.recorded_at) = date('now')
+              GROUP BY a.app_name, a.window_title
+              ORDER BY total_seconds DESC",
         )
         .map_err(|e| format!("Query error: {}", e))?;
 
@@ -293,6 +294,90 @@ pub fn get_today_app_usage(
                 app_name: row.get(0)?,
                 window_title: row.get(1)?,
                 total_seconds: row.get(2)?,
+            })
+        })
+        .map_err(|e| format!("Query error: {}", e))?;
+
+    let mut result = Vec::new();
+    for row in rows {
+        result.push(row.map_err(|e| format!("Row error: {}", e))?);
+    }
+
+    Ok(result)
+}
+
+#[derive(Serialize)]
+pub struct AppUsageReportRow {
+    pub date: String,
+    pub user_id: i64,
+    pub user_name: String,
+    pub app_name: String,
+    pub window_title: Option<String>,
+    pub total_seconds: i64,
+}
+
+#[tauri::command]
+pub fn get_app_usage_report(
+    app_handle: tauri::AppHandle,
+    user_id: Option<i64>,
+    start_date: String,
+    end_date: String,
+    app_filter: Option<String>,
+) -> Result<Vec<AppUsageReportRow>, String> {
+    let db_path = get_db_path(&app_handle)?;
+    let conn =
+        rusqlite::Connection::open(&db_path).map_err(|e| format!("DB error: {}", e))?;
+
+    let mut sql = String::from(
+        "SELECT date(a.recorded_at) as date, u.id as user_id, u.full_name as user_name, \
+         a.app_name, a.window_title, SUM(a.duration_seconds) as total_seconds \
+         FROM app_usage a \
+         JOIN time_entries t ON t.id = a.time_entry_id \
+         JOIN users u ON u.id = t.user_id \
+         WHERE date(a.recorded_at) BETWEEN ?1 AND ?2",
+    );
+
+    let mut params: Vec<Box<dyn ToSql>> = Vec::new();
+    params.push(Box::new(start_date));
+    params.push(Box::new(end_date));
+
+    let mut param_idx = 3;
+
+    if let Some(uid) = user_id {
+        sql.push_str(&format!(" AND t.user_id = ?{}", param_idx));
+        params.push(Box::new(uid));
+        param_idx += 1;
+    }
+
+    if let Some(ref filter) = app_filter {
+        if !filter.is_empty() {
+            sql.push_str(&format!(" AND a.app_name LIKE ?{}", param_idx));
+            params.push(Box::new(format!("%{}%", filter)));
+            param_idx += 1;
+        }
+    }
+
+    sql.push_str(
+        " GROUP BY date(a.recorded_at), u.id, u.full_name, a.app_name, a.window_title \
+         ORDER BY date(a.recorded_at) DESC, total_seconds DESC",
+    );
+
+    let _ = param_idx;
+
+    let mut stmt = conn
+        .prepare(&sql)
+        .map_err(|e| format!("Query error: {}", e))?;
+
+    let param_refs: Vec<&dyn ToSql> = params.iter().map(|p| p.as_ref()).collect();
+    let rows = stmt
+        .query_map(param_refs.as_slice(), |row| {
+            Ok(AppUsageReportRow {
+                date: row.get(0)?,
+                user_id: row.get(1)?,
+                user_name: row.get(2)?,
+                app_name: row.get(3)?,
+                window_title: row.get(4)?,
+                total_seconds: row.get(5)?,
             })
         })
         .map_err(|e| format!("Query error: {}", e))?;
